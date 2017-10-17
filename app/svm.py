@@ -11,7 +11,7 @@ class SVM:
 
 	def train(self, data, labels):
 		b = 0
-		data = zip(data, labels)
+		data = list(zip(data, labels))
 		alpha = [ 0 ] * len(data)
 		niter, npass = 0, 0
 
