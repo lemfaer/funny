@@ -1,6 +1,6 @@
 from __future__ import print_function
-from app.svm import SVM
-from app.kernel import linear, rbf
+from svm import SVM
+from kernel import linear, rbf
 
 data = [
 	[ -0.4326, 1.1909 ],
