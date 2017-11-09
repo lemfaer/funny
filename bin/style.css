@@ -1,0 +1,33 @@
+.quarter {
+	width: 50%;
+	height: 50%;
+	float: left;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: rgb(17, 17, 17);
+	background-color: rgb(248, 249, 250);
+	border-color: rgb(248, 249, 250);
+}
+
+.quarter:hover {
+	color: rgb(17, 17, 17) !important;
+	background-color: rgb(226, 230, 234) !important;
+	border-color: rgb(218, 224, 229) !important;
+}
+
+.quarter:active {
+	color: rgb(17, 17, 17) !important;
+	background-color: rgb(255, 193, 7) !important;
+	border-color: rgb(255, 193, 7) !important;
+}
+
+.btn-light:active {
+	color: rgb(17, 17, 17) !important;
+	background-color: rgb(255, 193, 7) !important;
+	border-color: rgb(255, 193, 7) !important;
+}
+
+.nav-link:active {
+	color: rgb(255, 193, 7) !important;
+}

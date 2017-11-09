@@ -1,0 +1,19 @@
+{
+	"scripts": {
+		"watch": "webpack --watch"
+	},
+
+	"dependencies": {
+		"bootstrap": "^4.0.0-beta.2"
+	},
+
+	"devDependencies": {
+		"react": "16.*",
+		"react-dom": "16.*",
+		"react-router-dom": "4.*",
+		"babel-cli": "6.*",
+		"babel-preset-react": "6.*",
+		"babel-preset-env": "1.*",
+		"babel-loader": "7.*"
+	}
+}
