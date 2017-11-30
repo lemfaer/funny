@@ -31,3 +31,8 @@
 .nav-link:active {
 	color: rgb(255, 193, 7) !important;
 }
+
+.octicon {
+	font: 22px/1 Octicons;
+	cursor: pointer;
+}

@@ -4,7 +4,8 @@
 	},
 
 	"dependencies": {
-		"bootstrap": "^4.0.0-beta.2"
+		"bootstrap": "^4.0.0-beta.2",
+		"octicons": "4.*"
 	},
 
 	"devDependencies": {

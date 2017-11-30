@@ -1,26 +1,26 @@
 import React, { Component } from "react"
 import Header from "./header.jsx"
-import Page from "./page.jsx"
+import Text from "./text.jsx"
 
-export default class Parser extends Component {
+export default class Classifier extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { "pages" : null }
+		this.state = { "texts" : null }
 	}
 
 	componentDidMount() {
-		document.title = "Parser"
+		document.title = "Classifier"
 	}
 
-	pages(update) {
-		if (this.state.pages && !update) {
-			return this.state.pages
+	texts(update) {
+		if (this.state.texts && !update) {
+			return this.state.texts
 		}
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/pages")
+		xhr.open("GET", "http://localhost/api/texts")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -28,8 +28,8 @@ export default class Parser extends Component {
 
 			if (xhr.status === 200) {
 				let json = xhr.responseText
-				let pages = JSON.parse(json)
-				this.setState({ "pages" : pages })
+				let texts = JSON.parse(json)
+				this.setState({ "texts" : texts })
 			}
 
 			if (xhr.status !== 200) {
@@ -41,15 +41,17 @@ export default class Parser extends Component {
 		return []
 	}
 
-	page(id) {
-		for (let page of this.pages()) {
-			if (page.id == id) {
-				var link = page.link
+	text(id) {
+		for (let text of this.texts()) {
+			if (text.id == id) {
+				var txt  = text.text
+				var cls  = text.class
+				var temp = text.temp
 				break
 			}
 		}
 
-		this.refs.page.toggle(id, link)
+		this.refs.text.toggle(id, txt, cls, temp)
 	}
 
 	start() {
@@ -62,25 +64,23 @@ export default class Parser extends Component {
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Link</th>
+						<th>Text</th>
+						<th>Class</th>
 						<th>Edit</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					{this.pages().map((page, index) => {
+					{this.texts().map((text, index) => {
 						return (
 							<tr key={index}>
-								<td>{page.id}</td>
-								<td>
-									<a href={decodeURI(page.link)}>
-										{decodeURI(page.link)}
-									</a>
-								</td>
+								<td>{text.id}</td>
+								<td><span className="text-truncate">{text.text}</span></td>
+								<td>{text.class}</td>
 								<td>
 									<span
 										className="octicon octicon-pencil"
-										onClick={this.page.bind(this, page.id, "test")}>
+										onClick={this.text.bind(this, text.id, "test")}>
 									</span>
 								</td>
 							</tr>
@@ -94,11 +94,11 @@ export default class Parser extends Component {
 	render() {
 		return (
 			<div className="container">
-				<Header current="/parser" />
-				<Page ref="page" />
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.page.bind(this)}>Add page</button>
+				<Header current="/classifier" />
+				<Text ref="text" />
+				<button type="button" className="btn btn-light float-right my-3" onClick={this.text.bind(this)}>Add text</button>
 				<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.pages.bind(this, true)}>
+				<button type="button" className="btn btn-light float-right my-3" onClick={this.texts.bind(this, true)}>
 					<span className="octicon octicon-sync"></span>
 				</button>
 				{ this.table.bind(this)() }
