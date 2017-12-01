@@ -4,6 +4,7 @@ CREATE TABLE page (
 	normal      VARCHAR(255) NULL,
 	positive    VARCHAR(255) NULL,
 	negative    VARCHAR(255) NULL,
+	rremove     VARCHAR(255) NULL,
 	created     TIMESTAMP    NOT NULL DEFAULT now(),
 	updated     TIMESTAMP    NOT NULL DEFAULT now() ON UPDATE now()
 )

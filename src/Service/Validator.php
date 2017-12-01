@@ -34,6 +34,10 @@ class Validator {
 		return is_null($value) || ( is_string($value) && !empty($value) );
 	}
 
+	function rremove($value) {
+		return is_null($value) || @preg_match($value, "") !== FALSE;
+	}
+
 	function text($value) {
 		return is_string($value);
 	}

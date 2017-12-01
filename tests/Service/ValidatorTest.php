@@ -36,6 +36,7 @@ class ValidatorTest extends TestCase {
 					"normal" => null,
 					"positive" => "span.hello > p",
 					"negative" => null,
+					"rremove" => "/\[[0-9]+\]/",
 					"text" => "test",
 					"class" => "normal",
 					"temp" => "YES"
@@ -50,6 +51,7 @@ class ValidatorTest extends TestCase {
 					"normal" => "",
 					"positive" => "",
 					"negative" => "",
+					"rremove" => "",
 					"text" => null,
 					"class" => "text",
 					"temp" => true
