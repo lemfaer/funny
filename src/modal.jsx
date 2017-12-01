@@ -8,11 +8,13 @@ export default class Modal extends Component {
 		super(props)
 		this.state = { "open" : false }
 
-		this.fade = document.createElement("div")
-		this.fade.id = "modal-fade"
-		this.fade.className = "modal-backdrop fade show"
-		this.fade.style.display = "none"
-		document.body.appendChild(this.fade)
+		if ( !(this.fade = document.getElementById("modal-fade")) ) {
+			this.fade = document.createElement("div")
+			this.fade.id = "modal-fade"
+			this.fade.className = "modal-backdrop fade show"
+			this.fade.style.display = "none"
+			document.body.appendChild(this.fade)
+		}
 	}
 
 	toggle(cb) {
