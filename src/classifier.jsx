@@ -29,7 +29,7 @@ export default class Classifier extends Component {
 			if (xhr.status === 200) {
 				let json = xhr.responseText
 				let texts = JSON.parse(json)
-				this.setState({ "texts" : texts })
+				this.setState({ "texts" : this.sort(texts) })
 			}
 
 			if (xhr.status !== 200) {
@@ -39,6 +39,22 @@ export default class Classifier extends Component {
 
 		xhr.send()
 		return []
+	}
+
+	sort(texts) {
+		function tsort(a, b) {
+			let aid = parseInt(a.id)
+			let bid = parseInt(b.id)
+			return +(aid > bid) || +(aid === bid) - 1
+		}
+
+		let temp = texts.filter((text) => text.temp === "YES")
+		let persist = texts.filter((text) => text.temp === "NO")
+
+		temp.sort(tsort)
+		persist.sort(tsort)
+
+		return persist.concat(temp)
 	}
 
 	text(id) {
@@ -73,9 +89,10 @@ export default class Classifier extends Component {
 				<tbody>
 					{this.texts().map((text, index) => {
 						return (
-							<tr key={index}>
+							<tr key={index} className={text.temp !== "YES" ? "table-warning" : ""}>
 								<td>{text.id}</td>
-								<td><span className="text-truncate">{text.text}</span></td>
+								<td>{text.text.substr(0, 200) +
+									(text.text.length > 200 ? "..." : "")}</td>
 								<td>{text.class}</td>
 								<td>
 									<span

@@ -19,7 +19,28 @@ export default class Text extends Component {
 		})
 	}
 
-	validate() {}
+	update() {
+		this.setState({
+			"text"    : this.refs.text.value,
+			"class"   : this.refs.class.value,
+			"persist" : this.refs.persist.checked
+		})
+	}
+
+	validate() {
+		let errors
+		for (let input of [ this.refs.text, this.refs.class ]) {
+			let error = this.error(input.name, input.value) || ""
+			errors = errors || error
+
+			input.form.classList.add("was-validated")
+			input.nextSibling.classList.add("is-invalid")
+			input.nextSibling.innerHTML = error
+			input.setCustomValidity(error)
+		}
+
+		return !errors
+	}
 
 	error(key, value) {
 		if (key === "text" && !value) {
@@ -62,6 +83,27 @@ export default class Text extends Component {
 		this.toggle()
 	}
 
+	delete() {
+		if (!this.state.id) {
+			return
+		}
+
+		let xhr = new XMLHttpRequest()
+
+		xhr.open("DELETE", "http://localhost/api/text/" + this.state.id)
+		xhr.onload = () => {
+			if (xhr.readyState !== 4) {
+				return
+			}
+
+			// alert if xhr.status === 200 success
+			// othervise failure
+		}
+
+		xhr.send()
+		this.toggle()
+	}
+
 	form() {
 		return (
 			<div>
@@ -73,9 +115,10 @@ export default class Text extends Component {
 							ref="text"
 							id="text-text"
 							name="text"
-							defaultValue={this.state.text}
+							value={this.state.text}
 							className="form-control"
-							rows="3"
+							rows="7"
+							onChange={this.update.bind(this)}
 							required
 						/>
 						<div className="invalid-feedback"></div>
@@ -87,8 +130,9 @@ export default class Text extends Component {
 							ref="class"
 							id="text-class"
 							name="class"
-							defaultValue={this.state.class}
+							value={this.state.class}
 							className="form-control"
+							onChange={this.update.bind(this)}
 							required>
 
 							<option value="positive">positive</option>
@@ -101,11 +145,13 @@ export default class Text extends Component {
 					<div className="form-check">
 						<label className="form-check-label">
 							<input
+								ref="persist"
 								type="checkbox"
 								id="text-persist"
 								name="persist"
 								checked={this.state.persist}
 								className="form-check-input"
+								onChange={this.update.bind(this)}
 							/>
 							Persist
 							<div className="invalid-feedback"></div>
@@ -117,8 +163,8 @@ export default class Text extends Component {
 			<div className="modal-footer">
 				<button form="text-form" type="button" className="btn btn-light" onClick={this.toggle.bind(this)}>Close</button>
 				{!this.state.id ? "" :
-					<button form="text-form" type="button" className="btn btn-danger">Delete</button>}
-				<button form="text-form" type="submit" className="btn btn-warning">Save</button>
+					<button form="text-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>Delete</button>}
+				<button form="text-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>Save</button>
 			</div>
 			</div>
 		)
