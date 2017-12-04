@@ -27,7 +27,9 @@ def parse(content, nos, pos, nes, rr, ll = 0):
 def parse_links(cnx, lid, ll):
 	stats = []
 	left = select_lcount(cnx)
-	avg, right = select_avg(cnx) or (0, 0)
+	avg, right = select_avg(cnx)
+	right = right or 0
+	avg = avg or 0
 
 	for page in select_links(cnx):
 		start = time()
