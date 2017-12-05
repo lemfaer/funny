@@ -54,6 +54,7 @@ def parse_links(cnx, lid, ll):
 
 		s = {
 			"link" : link,
+			"args" : args,
 			"loaded" : loaded,
 			"parsed" : parsed,
 			"time" : rtime,

@@ -1,6 +1,6 @@
 from db import *
 
-def create_report(cnx, lid, stats):
+def create_report(cnx, lid, ll, stats):
 	if not stats:
 		return
 
@@ -19,5 +19,6 @@ def create_report(cnx, lid, stats):
 		"total_time_parsed" : sum(parsed),
 		"total_time" : sum(rtime),
 
+		"minimum_text_length" : ll,
 		"links" : stats
 	})
