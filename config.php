@@ -22,6 +22,11 @@ return [
 	],
 
 	"routes" => [
+		[ "GET", "~^launches/([0-9]+),?([0-9]+)?$~", [ \Funny\Controller\Launch::class, "all" ] ],
+		[ "GET", "~^launch/([0-9]+)$~", [ \Funny\Controller\Launch::class, "get" ] ],
+		[ "GET", "~^launch/([a-z]+)$~", [ \Funny\Controller\Launch::class, "last" ] ],
+		[ "GET", "~^eta/([0-9]+)$~", [ \Funny\Controller\Launch::class, "eta" ] ],
+
 		[ "GET",  "~^pages$~", [ \Funny\Controller\Page::class, "all" ] ],
 		[ "GET",  "~^page/([0-9])+$~", [ \Funny\Controller\Page::class, "get" ] ],
 		[ "POST", "~^page/?([0-9]+)?$~", [ \Funny\Controller\Page::class, "save" ] ],
