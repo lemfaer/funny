@@ -21,8 +21,16 @@ def parse(content, nos, pos, nes, rr, ll = 0):
 	normal = texts(soup.find_all(nos), "normal") if nos else []
 	positive = texts(soup.find_all(pos), "positive") if pos else []
 	negative = texts(soup.find_all(nes), "negative") if nes else []
+	ptexts = normal + positive + negative
 
-	return normal + positive + negative
+	pcount = {
+		"normal" : len(normal),
+		"positive" : len(positive),
+		"negative" : len(negative),
+		"all" : len(ptexts)
+	}
+
+	return ptexts, pcount
 
 def parse_links(cnx, lid, ll):
 	stats = []
@@ -41,7 +49,7 @@ def parse_links(cnx, lid, ll):
 		clen = response.headers["Content-Length"]
 		content = response.content
 
-		texts = parse(content, *args, ll = ll)
+		texts, count = parse(content, *args, ll = ll)
 		parsed = time() - start - loaded
 
 		insert_texts(cnx, texts)
@@ -55,6 +63,7 @@ def parse_links(cnx, lid, ll):
 		s = {
 			"link" : link,
 			"args" : args,
+			"count" : count,
 			"loaded" : loaded,
 			"parsed" : parsed,
 			"time" : rtime,
