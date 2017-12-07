@@ -46,8 +46,10 @@ def parse_links(cnx, lid, ll):
 		response = get(link)
 		loaded = time() - start
 
-		clen = response.headers["Content-Length"]
 		content = response.content
+		clen = (response.headers["Content-Length"]
+			if "Content-Length" in response.headers
+			else len(content))
 
 		texts, count = parse(content, *args, ll = ll)
 		parsed = time() - start - loaded
