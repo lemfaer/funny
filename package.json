@@ -5,10 +5,13 @@
 
 	"dependencies": {
 		"bootstrap": "^4.0.0-beta.2",
+		"bricklayer": "0.4.*",
 		"octicons": "4.*"
 	},
 
 	"devDependencies": {
+		"sprintf-js": "1.*",
+		"chart.js": "2.*",
 		"react": "16.*",
 		"react-dom": "16.*",
 		"react-router-dom": "4.*",

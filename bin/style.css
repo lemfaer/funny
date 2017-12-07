@@ -26,13 +26,67 @@
 	color: rgb(17, 17, 17) !important;
 	background-color: rgb(255, 193, 7) !important;
 	border-color: rgb(255, 193, 7) !important;
+	box-shadow: 0 0 0 0.2rem rgba(255,193,7,.5) !important;
 }
 
 .nav-link:active {
 	color: rgb(255, 193, 7) !important;
 }
 
+.bg-warning {
+	background-color: #ffeeba !important;
+}
+
+.bg-success {
+	background-color: #c3e6cb !important;
+}
+
+.bg-primary {
+	background-color: #b8daff !important;
+}
+
 .octicon {
 	font: 22px/1 Octicons;
 	cursor: pointer;
+}
+
+.bricklayer-column {
+	padding: 0;
+}
+
+.report dt, .report dd {
+	font-size: 1.25rem;
+	font-weight: 400;
+}
+
+.report .card-body h4 {
+	margin-left: -1rem;
+}
+
+@media screen and (min-width: 640px) {
+	.bricklayer-column-sizer {
+		width: 100%;
+	}
+}
+
+@media screen and (min-width: 980px) {
+	.bricklayer-column-sizer {
+		width: 50%;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.bricklayer-column-sizer {
+		width: 33%;
+	}
+}
+
+@media screen and (min-width: 1600px) {
+	.container {
+		max-width: 1480px;
+	}
+
+	.bricklayer-column-sizer {
+		width: 25%;
+	}
 }

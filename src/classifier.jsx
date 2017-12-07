@@ -110,15 +110,17 @@ export default class Classifier extends Component {
 
 	render() {
 		return (
-			<div className="container">
+			<div>
 				<Header current="/classifier" />
-				<Text ref="text" />
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.text.bind(this)}>Add text</button>
-				<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.texts.bind(this, true)}>
-					<span className="octicon octicon-sync"></span>
-				</button>
-				{ this.table.bind(this)() }
+				<div className="container">
+					<Text ref="text" />
+					<button type="button" className="btn btn-light float-right my-3" onClick={this.text.bind(this)}>Add text</button>
+					<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
+					<button type="button" className="btn btn-light float-right my-3" onClick={this.texts.bind(this, true)}>
+						<span className="octicon octicon-sync"></span>
+					</button>
+					{ this.table.bind(this)() }
+				</div>
 			</div>
 		)
 	}

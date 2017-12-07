@@ -23,7 +23,7 @@ export default class Home extends Component {
 				<Link to="/predict" className="btn col-6 quarter"><h1>Predict</h1></Link>
 				<Link to="/parser" className="btn col-6 quarter"><h1>Parser</h1></Link>
 				<Link to="/classifier" className="btn col-6 quarter"><h1>Classifier</h1></Link>
-				<Link to="/report" className="btn col-6 quarter"><h1>Report</h1></Link>
+				<Link to="/reports" className="btn col-6 quarter"><h1>Reports</h1></Link>
 			</nav>
 		)
 	}

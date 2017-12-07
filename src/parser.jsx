@@ -93,15 +93,17 @@ export default class Parser extends Component {
 
 	render() {
 		return (
-			<div className="container">
+			<div>
 				<Header current="/parser" />
-				<Page ref="page" />
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.page.bind(this)}>Add page</button>
-				<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
-				<button type="button" className="btn btn-light float-right my-3" onClick={this.pages.bind(this, true)}>
-					<span className="octicon octicon-sync"></span>
-				</button>
-				{ this.table.bind(this)() }
+				<div className="container">
+					<Page ref="page" />
+					<button type="button" className="btn btn-light float-right my-3" onClick={this.page.bind(this)}>Add page</button>
+					<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
+					<button type="button" className="btn btn-light float-right my-3" onClick={this.pages.bind(this, true)}>
+						<span className="octicon octicon-sync"></span>
+					</button>
+					{ this.table.bind(this)() }
+				</div>
 			</div>
 		)
 	}

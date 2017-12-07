@@ -12,7 +12,7 @@ function fadein(element, from, to, cb, iv) {
 		element.style.opacity = op
 		element.style.filter = "alpha(opacity=" + op * 100 + ")"
 		op += op * 0.1
-	}, iv);
+	}, iv)
 }
 
 function fadeout(element, from, to, cb, iv) {
