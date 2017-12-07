@@ -64,7 +64,7 @@ class LaunchTest extends TestCase {
 					"created" => 0,
 					"updated" => 0
 				]],
-				"query" => "SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM launch LIMIT 1 OFFSET 0",
+				"query" => "SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM launch ORDER BY id DESC LIMIT 1 OFFSET 0",
 				"result" => [
 					"id" => 42,
 					"type" => "parser",

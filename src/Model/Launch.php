@@ -14,7 +14,8 @@ class Launch extends Model {
 		$query = "SELECT *,
 			unix_timestamp(created) AS created,
 			unix_timestamp(updated) AS updated
-			FROM launch LIMIT $limit OFFSET $offset";
+			FROM launch ORDER BY id DESC
+			LIMIT $limit OFFSET $offset";
 
 		$statm = $this->db->prepare($query);
 		$statm->execute();
