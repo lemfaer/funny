@@ -17,7 +17,7 @@ export default class Report extends Component {
 	}
 
 	componentDidMount() {
-		document.title = "Report " + this.id()
+		document.title = "Report #" + this.id()
 	}
 
 	id() {
@@ -87,7 +87,7 @@ export default class Report extends Component {
 			}
 		})
 
-		chart.classList.remove("d-none")
+		chart.parentNode.classList.remove("d-none")
 	}
 
 	parser() {
@@ -100,7 +100,9 @@ export default class Report extends Component {
 					</h4>
 
 					<div className="card-body float-right">
-						<canvas ref="chart" className="col-4 float-right mb-2 d-none" width="1" height="1"></canvas>
+						<div className="col-4 float-right mb-2 d-none">
+							<canvas ref="chart" width="1" height="1"></canvas>
+						</div>
 						<div className="col-8">
 							<h4 className="font-weight-normal">General:</h4>
 							<dl className="row">

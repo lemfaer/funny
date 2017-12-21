@@ -6,8 +6,10 @@ export default class Page extends Component {
 	constructor(props) {
 		super(props)
 		this.state = { "id" : 0, "link" : "", "timer" : null }
-		this.rkpo = /^(https?:\/\/)?kinopoisk\.ru.*$/i
-		this.rwiki = /^(https?:\/\/)?([a-z]{2})?\.?wikipedia\.org.*$/i
+		this.rkpo = /^(https?:\/\/)?(www\.)?kinopoisk\.ru.*$/i
+		this.rwiki = /^(https?:\/\/)?(www\.)?([a-z]{2})?\.?wikipedia\.org.*$/i
+		this.rlimdb = /^(https?:\/\/)?(www\.)?imdb\.com.*love.*$/i
+		this.rhimdb = /^(https?:\/\/)?(www\.)?imdb\.com.*hate.*$/i
 	}
 
 	toggle(id, link) {
@@ -41,22 +43,38 @@ export default class Page extends Component {
 			return "Link cannot be empty"
 		}
 
-		if (!this.rkpo.test(value) && !this.rwiki.test(value)) {
+		if (!this.rkpo.test(value) && !this.rwiki.test(value)
+				&& !this.rlimdb.test(value) && !this.rhimdb.test(value)) {
+
 			return "Unsupported link value"
 		}
 	}
 
-	correct(key, value) {
-		if (key === "link") {
-			value = decodeURI(value)
-			value = encodeURI(value)
+	data(link) {
+		let obj = {}
 
-			if (!/^https?:\/\//i.test(value)) {
-				value = "http://" + value;
-			}
+		obj.link = link
+		obj.link = decodeURI(obj.link)
+		obj.link = encodeURI(obj.link)
 
-			return value
+		if (!/^https?:\/\//i.test(obj.link)) {
+			obj.link = "http://" + obj.link;
 		}
+
+		if (this.rwiki.test(obj.link)) {
+			obj.normal = "p"
+			obj.rremove = "/(\\[.*\\])|(\\{.*\\})/"
+		}
+
+		if (this.rlimdb.test(obj.link)) {
+			obj.positive = "p"
+		}
+
+		if (this.rhimdb.test(obj.link)) {
+			obj.negative = "p"
+		}
+
+		return obj
 	}
 
 	save(event) {
@@ -79,7 +97,7 @@ export default class Page extends Component {
 			// othervise failure
 		}
 
-		let page = { "link" : this.correct("link", this.state.link) }
+		let page = this.data(this.state.link)
 		let json = JSON.stringify(page)
 
 		xhr.setRequestHeader("Content-Type", "application/json")

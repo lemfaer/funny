@@ -1,16 +1,46 @@
 import React, { Component } from "react"
+import Progress from "./progress.jsx"
 import Header from "./header.jsx"
+import Parse from "./parse.jsx"
 import Page from "./page.jsx"
 
 export default class Parser extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { "pages" : null }
+		this.state = { "last" : null, "pages" : null }
 	}
 
 	componentDidMount() {
 		document.title = "Parser"
+	}
+
+	last(update) {
+		if (this.state.last && !update) {
+			return this.state.last
+		}
+
+		let xhr = new XMLHttpRequest()
+
+		xhr.open("GET", "http://localhost/api/launch/parser")
+		xhr.onload = () => {
+			if (xhr.readyState !== 4) {
+				return
+			}
+
+			if (xhr.status === 200) {
+				let json = xhr.responseText
+				let last = JSON.parse(json)
+				this.setState({ "last" : last })
+			}
+
+			if (xhr.status !== 200) {
+				// alert
+			}
+		}
+
+		xhr.send()
+		return null
 	}
 
 	pages(update) {
@@ -52,8 +82,40 @@ export default class Parser extends Component {
 		this.refs.page.toggle(id, link)
 	}
 
-	start() {
-		console.log("start")
+	parse(id) {
+		this.refs.parse.toggle(id)
+	}
+
+	gui() {
+		let last = this.last()
+		let running = last && !last.report
+		let ending = () => { this.setState({ "last" : null }) }
+
+		return (
+			<div>
+				<button
+					type="button"
+					className="btn btn-light float-right my-3"
+					onClick={this.page.bind(this)}>
+						Add page
+				</button>
+
+				<button
+					type="button"
+					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
+					onClick={this.parse.bind(this, running && last.id)}>
+						{ running ? "Watch" : "Start" }
+						{ running ? <Progress lid={last.id} eta={false} end={ending} /> : "" }
+				</button>
+
+				<button
+					type="button"
+					className="btn btn-light float-right my-3"
+					onClick={this.pages.bind(this, true)}>
+						<span className="octicon octicon-sync"></span>
+				</button>
+			</div>
+		)
 	}
 
 	table() {
@@ -97,11 +159,8 @@ export default class Parser extends Component {
 				<Header current="/parser" />
 				<div className="container">
 					<Page ref="page" />
-					<button type="button" className="btn btn-light float-right my-3" onClick={this.page.bind(this)}>Add page</button>
-					<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
-					<button type="button" className="btn btn-light float-right my-3" onClick={this.pages.bind(this, true)}>
-						<span className="octicon octicon-sync"></span>
-					</button>
+					<Parse ref="parse" />
+					{ this.gui.bind(this)() }
 					{ this.table.bind(this)() }
 				</div>
 			</div>

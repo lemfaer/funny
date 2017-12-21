@@ -33,8 +33,29 @@
 	color: rgb(255, 193, 7) !important;
 }
 
+.bg-progress {
+	position: relative;
+	background: transparent;
+	border-color: #f8f9fa;
+}
+
+.bg-progress > div {
+	background-color: #f8f9fa;
+}
+
+.bg-progress .progress {
+	position: absolute;
+	height: 100%;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: -1;
+}
+
 .bg-warning {
 	background-color: #ffeeba !important;
+}
+
+.bg-warning.progress-bar {
+	background-color: #ffc107 !important;
 }
 
 .bg-success {
