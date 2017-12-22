@@ -8,8 +8,8 @@ export default class Text extends Component {
 		this.state = { "id" : 0, "text" : "", "class" : "normal", "persist" : true, "timer" : null }
 	}
 
-	toggle(id, text, cls, temp) {
-		this.refs.modal.toggle(() => {
+	open(id, text, cls, temp) {
+		this.refs.modal.open(() => {
 			this.setState({
 				"id"      : +id  || 0,
 				"text"    : text || "",
@@ -17,6 +17,10 @@ export default class Text extends Component {
 				"persist" : temp !== "YES"
 			})
 		})
+	}
+
+	close() {
+		this.refs.modal.close()
 	}
 
 	update() {
@@ -80,7 +84,7 @@ export default class Text extends Component {
 
 		xhr.setRequestHeader("Content-Type", "application/json")
 		xhr.send(text)
-		this.toggle()
+		this.close()
 	}
 
 	delete() {
@@ -101,7 +105,7 @@ export default class Text extends Component {
 		}
 
 		xhr.send()
-		this.toggle()
+		this.close()
 	}
 
 	form() {
@@ -161,7 +165,7 @@ export default class Text extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button form="text-form" type="button" className="btn btn-light" onClick={this.toggle.bind(this)}>Close</button>
+				<button form="text-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
 				{!this.state.id ? "" :
 					<button form="text-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>Delete</button>}
 				<button form="text-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>Save</button>

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { pages } from "../config.json"
 import Modal from "./modal.jsx"
 
 export default class Page extends Component {
@@ -6,18 +7,18 @@ export default class Page extends Component {
 	constructor(props) {
 		super(props)
 		this.state = { "id" : 0, "link" : "", "timer" : null }
-		this.rkpo = /^(https?:\/\/)?(www\.)?kinopoisk\.ru.*$/i
-		this.rwiki = /^(https?:\/\/)?(www\.)?([a-z]{2})?\.?wikipedia\.org.*$/i
-		this.rlimdb = /^(https?:\/\/)?(www\.)?imdb\.com.*love.*$/i
-		this.rhimdb = /^(https?:\/\/)?(www\.)?imdb\.com.*hate.*$/i
 	}
 
-	toggle(id, link) {
+	open(id, link) {
 		id = +id || 0
 		link = link || ""
-		this.refs.modal.toggle(() => {
+		this.refs.modal.open(() => {
 			this.setState({ "id" : id, "link" : link })
 		})
+	}
+
+	close() {
+		this.refs.modal.close()
 	}
 
 	uplink(event) {
@@ -43,9 +44,17 @@ export default class Page extends Component {
 			return "Link cannot be empty"
 		}
 
-		if (!this.rkpo.test(value) && !this.rwiki.test(value)
-				&& !this.rlimdb.test(value) && !this.rhimdb.test(value)) {
+		let matched = false;
+		for (let name in pages) {
+			let page = pages[name]
+			let regex = new RegExp(page.match, page.flags)
 
+			if (regex.test(value)) {
+				matched = true
+			}
+		}
+
+		if (!matched) {
 			return "Unsupported link value"
 		}
 	}
@@ -61,17 +70,16 @@ export default class Page extends Component {
 			obj.link = "http://" + obj.link;
 		}
 
-		if (this.rwiki.test(obj.link)) {
-			obj.normal = "p"
-			obj.rremove = "/(\\[.*\\])|(\\{.*\\})/"
-		}
+		for (let name in pages) {
+			let page = pages[name]
+			let regex = new RegExp(page.match, page.flags)
 
-		if (this.rlimdb.test(obj.link)) {
-			obj.positive = "p"
-		}
-
-		if (this.rhimdb.test(obj.link)) {
-			obj.negative = "p"
+			if (regex.test(link)) {
+				obj.normal = page.normal
+				obj.positive = page.positive
+				obj.negative = page.negative
+				obj.rremove = page.rremove
+			}
 		}
 
 		return obj
@@ -102,7 +110,7 @@ export default class Page extends Component {
 
 		xhr.setRequestHeader("Content-Type", "application/json")
 		xhr.send(json)
-		this.toggle()
+		this.close()
 	}
 
 	delete() {
@@ -123,7 +131,7 @@ export default class Page extends Component {
 		}
 
 		xhr.send()
-		this.toggle()
+		this.close()
 	}
 
 	form() {
@@ -149,7 +157,7 @@ export default class Page extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button form="page-form" type="button" className="btn btn-light" onClick={this.toggle.bind(this)}>Close</button>
+				<button form="page-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
 				{!this.state.id ? "" :
 					<button form="page-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>Delete</button>}
 				<button form="page-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>Save</button>

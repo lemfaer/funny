@@ -79,11 +79,11 @@ export default class Parser extends Component {
 			}
 		}
 
-		this.refs.page.toggle(id, link)
+		this.refs.page.open(id, link)
 	}
 
 	parse(id) {
-		this.refs.parse.toggle(id)
+		this.refs.parse.open(id)
 	}
 
 	gui() {

@@ -75,6 +75,10 @@ export default class Progress extends Component {
 		this.setState({ "gone" : gone, "percent" : percent, "tickout" : tick })
 	}
 
+	clear() {
+		clearInterval(this.state.tick)
+	}
+
 	render() {
 		return (
 			<div>

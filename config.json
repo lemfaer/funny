@@ -1,0 +1,35 @@
+{
+
+	"pages" : {
+		"wiki" : {
+			"title" : "wiki",
+			"match" : "^(https?:\/\/)?(www\\.)?([a-z]{2})?\\.?wikipedia\\.org.*$",
+			"flags" : "i",
+			"normal" : "//p",
+			"positive" : null,
+			"negative" : null,
+			"rremove" : "/(\\[.*\\])|(\\{.*\\})/"
+		},
+
+		"imdb" : {
+			"title" : "imdb",
+			"match" : "^(https?:\/\/)?(www\\.)?imdb\\.com.*$",
+			"flags" : "i",
+			"normal" : null,
+			"positive" : "//span[contains(@class, 'rating-other-user-rating')]/span[not(contains(@class, 'point-scale')) and number(.) > 7]/ancestor::div[contains(@class, 'lister-item-content')]//div[contains(@class, 'text') and not(contains(@class, 'text-muted'))]",
+			"negative" : "//span[contains(@class, 'rating-other-user-rating')]/span[not(contains(@class, 'point-scale')) and number(.) < 4]/ancestor::div[contains(@class, 'lister-item-content')]//div[contains(@class, 'text') and not(contains(@class, 'text-muted'))]",
+			"rremove" : null
+		},
+
+		"kinopoisk" : {
+			"title" : "kinopoisk",
+			"match" : "^(https?:\/\/)?(www\\.)?kinopoisk\\.ru.*$",
+			"flags" : "i",
+			"normal" : null,
+			"positive" : null,
+			"negative" : null,
+			"rremove" : null
+		}
+	}
+
+}

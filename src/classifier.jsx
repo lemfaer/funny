@@ -67,7 +67,7 @@ export default class Classifier extends Component {
 			}
 		}
 
-		this.refs.text.toggle(id, txt, cls, temp)
+		this.refs.text.open(id, txt, cls, temp)
 	}
 
 	start() {
@@ -97,7 +97,7 @@ export default class Classifier extends Component {
 								<td>
 									<span
 										className="octicon octicon-pencil"
-										onClick={this.text.bind(this, text.id, "test")}>
+										onClick={this.text.bind(this, text.id)}>
 									</span>
 								</td>
 							</tr>

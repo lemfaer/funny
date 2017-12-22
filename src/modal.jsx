@@ -17,12 +17,12 @@ export default class Modal extends Component {
 		}
 	}
 
-	toggle(cb) {
-		if (!this.state.open) {
-			this.willOpen(cb)
-		} else {
-			this.willClose(cb)
-		}
+	open(cb) {
+		this.state.open || this.willOpen(cb)
+	}
+
+	close(cb) {
+		this.state.open && this.willClose(cb)
 	}
 
 	componentDidUpdate() {
@@ -64,7 +64,7 @@ export default class Modal extends Component {
 					<div className="modal-content">
 						<div className="modal-header">
 							<h5 className="modal-title">{this.props.title}</h5>
-							<button type="button" className="close" onClick={this.toggle.bind(this, null)}><span>&times;</span></button>
+							<button type="button" className="close" onClick={this.close.bind(this, null)}><span>&times;</span></button>
 						</div>
 						{this.props.content}
 					</div>

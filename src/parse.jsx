@@ -9,10 +9,15 @@ export default class Parse extends Component {
 		this.state = { "lid" : 0 }
 	}
 
-	toggle(lid) {
-		this.refs.modal.toggle(() => {
+	open(lid) {
+		this.refs.modal.open(() => {
 			this.setState({ "lid" : +lid })
 		})
+	}
+
+	close() {
+		this.refs.modal.close()
+		this.refs.progress.clear()
 	}
 
 	start() {
@@ -62,12 +67,12 @@ export default class Parse extends Component {
 						</div>
 					</form>
 
-					: <Progress lid={this.state.lid} eta={true} end={this.toggle.bind(this)} />
+					: <Progress ref="progress" lid={this.state.lid} eta={true} end={this.close.bind(this)} />
 				}
 			</div>
 
 			<div className="modal-footer">
-				<button form="page-form" type="button" className="btn btn-light" onClick={this.toggle.bind(this)}>Close</button>
+				<button form="page-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
 				{this.state.lid ? "" :
 					<button form="page-form" type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>Start</button>}
 			</div>
