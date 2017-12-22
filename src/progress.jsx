@@ -8,6 +8,7 @@ export default class Progress extends Component {
 			"gone" : 0,
 			"eta" : -1,
 			"stats" : 0,
+			"watch" : true,
 			"delay" : 0,
 			"tick" : null,
 			"tickin" : 100,
@@ -51,6 +52,10 @@ export default class Progress extends Component {
 		var eta, time, delay, tick
 		clearInterval(this.state.tick)
 
+		if (!this.state.watch) {
+			return
+		}
+
 		if (!stats || +stats.eta) {
 			eta   = (stats ? +stats.eta  : -1) * 1000
 			time  = (stats ? +stats.time : -1) * 1000
@@ -77,6 +82,7 @@ export default class Progress extends Component {
 
 	clear() {
 		clearInterval(this.state.tick)
+		this.setState({ "watch" : false })
 	}
 
 	render() {
