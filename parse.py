@@ -1,14 +1,14 @@
-from bs4 import BeautifulSoup
+from lxml import html
 from requests import get
 from time import time
 from re import sub
 from db import *
 
 def parse(content, nos, pos, nes, rr, ll = 0):
-	def texts(soup, cls):
+	def texts(nodes, cls):
 		texts = []
-		for text in soup:
-			text = text.get_text()
+		for text in nodes:
+			text = text.text_content()
 			text = sub("\s+", " ", text)
 			text = sub(rr[1:-1], "", text) if rr else text
 
@@ -17,10 +17,10 @@ def parse(content, nos, pos, nes, rr, ll = 0):
 
 		return texts
 
-	soup = BeautifulSoup(content, "html.parser")
-	normal = texts(soup.find_all(nos), "normal") if nos else []
-	positive = texts(soup.find_all(pos), "positive") if pos else []
-	negative = texts(soup.find_all(nes), "negative") if nes else []
+	tree = html.document_fromstring(content)
+	normal = texts(tree.xpath(nos), "normal") if nos else []
+	positive = texts(tree.xpath(pos), "positive") if pos else []
+	negative = texts(tree.xpath(nes), "negative") if nes else []
 	ptexts = normal + positive + negative
 
 	pcount = {
