@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { pages } from "../config.json"
+import { salert } from "./alert.js"
 import Modal from "./modal.jsx"
 
 export default class Page extends Component {
@@ -101,8 +102,17 @@ export default class Page extends Component {
 				return
 			}
 
-			// alert if xhr.status === 200 success
-			// othervise failure
+			if (xhr.status === 200 && !this.state.id) {
+				salert("Page created", true)
+			}
+
+			if (xhr.status === 200 && this.state.id) {
+				salert(sprintf("Page #%d updated", this.state.id), true)
+			}
+
+			if (xhr.status !== 200) {
+				salert("Can't save page", false)
+			}
 		}
 
 		let page = this.data(this.state.link)
@@ -126,8 +136,13 @@ export default class Page extends Component {
 				return
 			}
 
-			// alert if xhr.status === 200 success
-			// othervise failure
+			if (xhr.status === 200) {
+				salert(sprintf("Page #%d deleted", this.state.id), true)
+			}
+
+			if (xhr.status !== 200) {
+				salert("Can't delete page", false)
+			}
 		}
 
 		xhr.send()

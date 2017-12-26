@@ -89,6 +89,44 @@ textarea.form-control {
 	max-height: 32rem;
 }
 
+.snackbar {
+	visibility: hidden;
+	min-width: 15rem;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	left: 50%;
+	bottom: 2rem;
+	font-size: 1.1rem;
+	transform: translate(-50%);
+}
+
+.snackbar.show {
+	visibility: visible;
+	-webkit-animation: sbshow 0.5s, sbhide 0.5s 2.5s;
+	animation: sbshow 0.5s, sbhide 0.5s 2.5s;
+}
+
+@-webkit-keyframes sbshow {
+	from {bottom: 0; opacity: 0;}
+	to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes sbshow {
+	from {bottom: 0; opacity: 0;}
+	to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes sbhide {
+	from {bottom: 30px; opacity: 1;}
+	to {bottom: 0; opacity: 0;}
+}
+
+@keyframes sbhide {
+	from {bottom: 30px; opacity: 1;}
+	to {bottom: 0; opacity: 0;}
+}
+
 @media screen and (min-width: 640px) {
 	.bricklayer-column-sizer {
 		width: 100%;

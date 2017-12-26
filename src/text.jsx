@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { salert } from "./alert.js"
 import Modal from "./modal.jsx"
 
 export default class Text extends Component {
@@ -72,8 +73,17 @@ export default class Text extends Component {
 				return
 			}
 
-			// alert if xhr.status === 200 success
-			// othervise failure
+			if (xhr.status === 200 && !this.state.id) {
+				salert("Text created", true)
+			}
+
+			if (xhr.status === 200 && this.state.id) {
+				salert(sprintf("Text #%d updated", this.state.id), true)
+			}
+
+			if (xhr.status !== 200) {
+				salert("Can't save text", false)
+			}
 		}
 
 		let text = JSON.stringify({
@@ -100,8 +110,13 @@ export default class Text extends Component {
 				return
 			}
 
-			// alert if xhr.status === 200 success
-			// othervise failure
+			if (xhr.status === 200) {
+				salert(sprintf("Text #%d deleted", this.state.id), true)
+			}
+
+			if (xhr.status !== 200) {
+				salert("Can't delete text", false)
+			}
 		}
 
 		xhr.send()

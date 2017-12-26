@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Progress from "./progress.jsx"
+import { salert } from "./alert.js"
 import Header from "./header.jsx"
 import Parse from "./parse.jsx"
 import Page from "./page.jsx"
@@ -33,10 +34,6 @@ export default class Parser extends Component {
 				let last = JSON.parse(json)
 				this.setState({ "last" : last })
 			}
-
-			if (xhr.status !== 200) {
-				// alert
-			}
 		}
 
 		xhr.send()
@@ -63,7 +60,7 @@ export default class Parser extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				// alert
+				salert("Can't load pages", false)
 			}
 		}
 

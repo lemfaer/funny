@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Progress from "./progress.jsx"
+import { salert } from "./alert.js"
 import Modal from "./modal.jsx"
 
 export default class Parse extends Component {
@@ -34,7 +35,7 @@ export default class Parse extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				// alert
+				salert("Can't start parser", false)
 			}
 		}
 

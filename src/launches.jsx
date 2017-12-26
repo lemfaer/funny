@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
+import { salert } from "./alert.js"
 import Bricklayer from "bricklayer"
 import Header from "./header.jsx"
 import Chart from "chart.js"
@@ -84,7 +85,7 @@ export default class Launches extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				// alert
+				salert("Can't load launches", false)
 			}
 		}
 

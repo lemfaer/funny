@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { salert } from "./alert.js"
 import Header from "./header.jsx"
 import Text from "./text.jsx"
 
@@ -33,7 +34,7 @@ export default class Classifier extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				// alert
+				salert("Can't load texts", false)
 			}
 		}
 

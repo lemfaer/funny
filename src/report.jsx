@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Progress from "./progress.jsx"
+import { salert } from "./alert.js"
 import Header from "./header.jsx"
 import { ftdate } from "./fdate"
 import Chart from "chart.js"
@@ -46,7 +47,7 @@ export default class Report extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				// alert
+				salert("Can't load report", false)
 			}
 		}
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { salert } from "./alert.js"
 
 export default class Progress extends Component {
 
@@ -41,8 +42,6 @@ export default class Progress extends Component {
 				this.watch()
 				return
 			}
-
-			// alert
 		}
 
 		xhr.send()
@@ -52,7 +51,7 @@ export default class Progress extends Component {
 		clearInterval(this.state.tick)
 
 		if (this.state.watch === 0) {
-			// alert
+			salert("Process error", false)
 		}
 
 		if (!this.state.watch) {
@@ -72,9 +71,10 @@ export default class Progress extends Component {
 			return
 		}
 
+
 		this.setState({ "eta" : 0, "percent" : 100 })
+		salert(sprintf("Process #%d ended", this.props.lid), true)
 		this.props.end()
-		// alert
 	}
 
 	tick() {
