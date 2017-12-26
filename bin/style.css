@@ -84,6 +84,11 @@
 	margin-left: -1rem;
 }
 
+textarea.form-control {
+	min-height: 12rem;
+	max-height: 32rem;
+}
+
 @media screen and (min-width: 640px) {
 	.bricklayer-column-sizer {
 		width: 100%;

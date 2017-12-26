@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Progress from "./progress.jsx"
 import Header from "./header.jsx"
 import { ftdate } from "./fdate"
 import Chart from "chart.js"
@@ -25,7 +26,7 @@ export default class Report extends Component {
 	}
 
 	launch(id) {
-		if (this.state.id === id && this.state.report) {
+		if (this.state.id === id && this.state.type) {
 			return this.state
 		}
 
@@ -100,45 +101,76 @@ export default class Report extends Component {
 					</h4>
 
 					<div className="card-body float-right">
-						<div className="col-4 float-right mb-2 d-none">
-							<canvas ref="chart" width="1" height="1"></canvas>
-						</div>
+						{!this.state.report ? "" :
+							<div className="col-4 float-right mb-2 d-none">
+								<canvas ref="chart" width="1" height="1"></canvas>
+							</div>
+						}
+
 						<div className="col-8">
-							<h4 className="font-weight-normal">General:</h4>
-							<dl className="row">
-								<dt className="col-6">Total pages to parse</dt>
-								<dd className="col-6">{this.state.report.links.length}</dd>
+							{!this.state.report
+								? <div>
+									<h4 className="font-weight-normal">General:</h4>
+									<dl className="row">
+										<dt className="col-6">Launched</dt>
+										<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-								<dt className="col-6">Minimum text length</dt>
-								<dd className="col-6">{this.state.report["minimum_text_length"]}</dd>
+										<dt className="col-6">Progress</dt>
+										<dd className="col-6">
+											<Progress
+												lid={this.state.id}
+												end={() => { this.setState({ "id" : 0 }) }}
+												eta={true} />
+										</dd>
+									</dl>
+								</div>
 
-								<dt className="col-6">Launched</dt>
-								<dd className="col-6">{ftdate(this.state.created)}</dd>
+								: <div>
+									<h4 className="font-weight-normal">General:</h4>
+									<dl className="row">
+										<dt className="col-6">Total pages to parse</dt>
+										<dd className="col-6">{this.state.report.links.length}</dd>
 
-								<dt className="col-6">Ended</dt>
-								<dd className="col-6">{ftdate(this.state.updated)}</dd>
-							</dl>
+										<dt className="col-6">Minimum text length</dt>
+										<dd className="col-6">{this.state.report["minimum_text_length"]}</dd>
 
-							<h4 className="font-weight-normal">Total:</h4>
-							<dl className="row">
-								<dt className="col-6">Texts</dt>
-								<dd className="col-6">{this.state.report["total_parsed"]}</dd>
+										<dt className="col-6">Launched</dt>
+										<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-								<dt className="col-6">Estimated</dt>
-								<dd className="col-6">{sprintf("%.2fs", this.state.report["original_estimate"])}</dd>
+										<dt className="col-6">Ended</dt>
+										<dd className="col-6">{ftdate(this.state.updated)}</dd>
+									</dl>
+								</div>
+							}
 
-								<dt className="col-6">Time</dt>
-								<dd className="col-6">{sprintf("%.2fs", this.state.report["total_time"])}</dd>
-							</dl>
+							{!this.state.report ? "" :
+								<div>
+									<h4 className="font-weight-normal">Total:</h4>
+									<dl className="row">
+										<dt className="col-6">Texts</dt>
+										<dd className="col-6">{this.state.report["total_parsed"]}</dd>
 
-							<h4 className="font-weight-normal">Average:</h4>
-							<dl className="row">
-								<dt className="col-6">Texts per page</dt>
-								<dd className="col-6">{this.state.report["average_parsed"]}</dd>
+										<dt className="col-6">Estimated</dt>
+										<dd className="col-6">{sprintf("%.2fs", this.state.report["original_estimate"])}</dd>
 
-								<dt className="col-6">Time</dt>
-								<dd className="col-6">{sprintf("%.2fs", this.state.report["average_time"])}</dd>
-							</dl>
+										<dt className="col-6">Time</dt>
+										<dd className="col-6">{sprintf("%.2fs", this.state.report["total_time"])}</dd>
+									</dl>
+								</div>
+							}
+
+							{!this.state.report ? "" :
+								<div>
+									<h4 className="font-weight-normal">Average:</h4>
+									<dl className="row">
+										<dt className="col-6">Texts per page</dt>
+										<dd className="col-6">{this.state.report["average_parsed"]}</dd>
+
+										<dt className="col-6">Time</dt>
+										<dd className="col-6">{sprintf("%.2fs", this.state.report["average_time"])}</dd>
+									</dl>
+								</div>
+							}
 						</div>
 					</div>
 				</div>
@@ -190,7 +222,7 @@ export default class Report extends Component {
 				<Header current="/reports" />
 				<div className="container pt-4">
 					{(launch && launch.type === "parser") ? this.parser() : ""}
-					{(launch && launch.type === "parser") ? this.ptable() : ""}
+					{(launch && launch.type === "parser" && launch.report) ? this.ptable() : ""}
 				</div>
 			</div>
 		)

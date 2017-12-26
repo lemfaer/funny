@@ -5,11 +5,11 @@ export default class Progress extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			"gone" : 0,
-			"eta" : -1,
+			"eta" : -1000,
 			"stats" : 0,
-			"watch" : true,
+			"watch" : 10,
 			"delay" : 0,
+			"gone" : 0,
 			"tick" : null,
 			"tickin" : 100,
 			"tickout" : 0,
@@ -49,22 +49,26 @@ export default class Progress extends Component {
 	}
 
 	watch(stats) {
-		var eta, time, delay, tick
 		clearInterval(this.state.tick)
+
+		if (this.state.watch === 0) {
+			// alert
+		}
 
 		if (!this.state.watch) {
 			return
 		}
 
 		if (!stats || +stats.eta) {
-			eta   = (stats ? +stats.eta  : -1) * 1000
-			time  = (stats ? +stats.time : -1) * 1000
-			delay = (stats ? Math.max(this.state.delay, time) : 100)
-			delay = (stats && stats.id === this.state.stats ? this.state.delay : delay)
+			let eta   = (stats ? +stats.eta  : -1) * 1000
+			let time1 = (stats ? +stats.time : -1) * 1000
+			let time2 = (stats ? eta * .15   : -1  * 1000)
+			let delay = (stats ? Math.max(this.state.delay, time1, time2) : 500)
+			let watch = (!stats || stats.id === this.state.stats ? this.state.watch - 1 : 10)
 
 			setTimeout(this.load.bind(this), delay)
-			tick = setInterval(this.tick.bind(this), this.state.tickin)
-			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "tick" : tick, "tickout" : 0 })
+			let tick = setInterval(this.tick.bind(this), this.state.tickin)
+			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 })
 			return
 		}
 
@@ -76,7 +80,7 @@ export default class Progress extends Component {
 	tick() {
 		let gone = this.state.gone + this.state.tickin
 		let tick = this.state.tickout + this.state.tickin
-		let percent = gone / (gone - tick + this.state.eta) * 100
+		let percent = 100 * (this.state.eta > 0 ? gone / (gone - tick + this.state.eta) : 0)
 		this.setState({ "gone" : gone, "percent" : percent, "tickout" : tick })
 	}
 
