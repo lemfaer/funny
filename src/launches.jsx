@@ -69,7 +69,7 @@ export default class Launches extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", sprintf("http://localhost/api/launches/%s,%s", limit, (page - 1) * limit))
+		xhr.open("GET", sprintf("/api/launches/%s,%s", limit, (page - 1) * limit))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

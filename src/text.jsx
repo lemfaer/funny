@@ -67,7 +67,7 @@ export default class Text extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "http://localhost/api/text/" + (this.state.id || ""))
+		xhr.open("POST", "/api/text/" + (this.state.id || ""))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -104,7 +104,7 @@ export default class Text extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("DELETE", "http://localhost/api/text/" + this.state.id)
+		xhr.open("DELETE", "/api/text/" + this.state.id)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

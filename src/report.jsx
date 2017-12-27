@@ -33,7 +33,7 @@ export default class Report extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/launch/" + id)
+		xhr.open("GET", "/api/launch/" + id)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

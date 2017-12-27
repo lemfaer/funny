@@ -1,0 +1,19 @@
+AddDefaultCharset utf-8
+
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ blank.html [L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^/?api(.*)$ $1 [L,P,NC]
+RewriteRule ^/?(#.*)?$ bin/index.html [L,NC]
+RewriteRule ^/?[\w/,]+$ api/index.php [L,NC]
+
+SetEnvIf Request_Method OPTIONS opts
+SetEnvIf Request_URI "^/?api/index.php$" opts
+Header always set Access-Control-Allow-Origin * env=opts
+Header always set Access-Control-Allow-Headers "Content-Type" env=opts
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT" env=opts

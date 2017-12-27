@@ -21,7 +21,7 @@ export default class Classifier extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/texts")
+		xhr.open("GET", "/api/texts")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

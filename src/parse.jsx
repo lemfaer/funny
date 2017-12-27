@@ -24,7 +24,7 @@ export default class Parse extends Component {
 	start() {
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "http://localhost/api/start/parser")
+		xhr.open("POST", "/api/start/parser")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

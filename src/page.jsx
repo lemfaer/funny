@@ -96,7 +96,7 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "http://localhost/api/page/" + (this.state.id || ""))
+		xhr.open("POST", "/api/page/" + (this.state.id || ""))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -130,7 +130,7 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("DELETE", "http://localhost/api/page/" + this.state.id)
+		xhr.open("DELETE", "/api/page/" + this.state.id)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

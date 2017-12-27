@@ -1,0 +1,6 @@
+[submodule "api"]
+	path = api
+	url = https://github.com/lfunny/api.git
+[submodule "parser"]
+	path = parser
+	url = https://github.com/lfunny/parser.git

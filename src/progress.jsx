@@ -25,7 +25,7 @@ export default class Progress extends Component {
 	load() {
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/eta/" + this.props.lid)
+		xhr.open("GET", "/api/eta/" + this.props.lid)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return

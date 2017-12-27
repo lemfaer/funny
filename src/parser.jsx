@@ -23,7 +23,7 @@ export default class Parser extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/launch/parser")
+		xhr.open("GET", "/api/launch/parser")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -47,7 +47,7 @@ export default class Parser extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "http://localhost/api/pages")
+		xhr.open("GET", "/api/pages")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
