@@ -4,9 +4,11 @@ return [
 
 	"app" => [
 		"domain" => $_SERVER["HTTP_HOST"],
+		"python" => "python",
 		"root" => __DIR__,
 		"src" => __DIR__ . "/src",
-		"tests" => __DIR__ . "/tests"
+		"tests" => __DIR__ . "/tests",
+		"parser" => __DIR__ . "/../parser"
 	],
 
 	"db" => [
@@ -22,6 +24,8 @@ return [
 	],
 
 	"routes" => [
+		[ "POST", "~^start/parser$~", [ \Funny\Controller\Start::class, "parser" ] ],
+
 		[ "GET", "~^launches/([0-9]+),?([0-9]+)?$~", [ \Funny\Controller\Launch::class, "all" ] ],
 		[ "GET", "~^launch/([0-9]+)$~", [ \Funny\Controller\Launch::class, "get" ] ],
 		[ "GET", "~^launch/([a-z]+)$~", [ \Funny\Controller\Launch::class, "last" ] ],
