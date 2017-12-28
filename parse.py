@@ -47,7 +47,7 @@ def parse_links(cnx, lid, ll):
 		loaded = time() - start
 
 		content = response.content
-		clen = (response.headers["Content-Length"]
+		clen = int(response.headers["Content-Length"]
 			if "Content-Length" in response.headers
 			else len(content))
 
