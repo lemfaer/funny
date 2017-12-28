@@ -11,7 +11,7 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: "babel-loader",
 				options: {
-					presets: ["env", "react"]
+					presets: [ "env", "react" ]
 				}
 			}
 		]
@@ -23,8 +23,7 @@ module.exports = {
 	},
 
 	plugins: [
-		// new webpack.optimize.DedupePlugin(),
-		// new webpack.optimize.OccurenceOrderPlugin(),
-		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false, output: { comments: false } }),
+		new webpack.DefinePlugin({ "process.env.NODE_ENV" : JSON.stringify("production") }),
+		new webpack.optimize.UglifyJsPlugin({ "mangle" : false, "sourcemap" : false, "output" : { "comments" : false } })
 	]
 };
