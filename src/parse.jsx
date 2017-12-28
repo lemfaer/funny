@@ -17,7 +17,7 @@ export default class Parse extends Component {
 	}
 
 	close() {
-		this.refs.progress.clear()
+		this.refs.progress && this.refs.progress.clear()
 		this.refs.modal.close()
 	}
 
