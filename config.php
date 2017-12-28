@@ -13,7 +13,7 @@ return [
 
 	"db" => [
 		"host" => "127.0.0.1",
-		"base" => "sal",
+		"base" => "funny",
 		"user" => "root",
 		"pass" => "",
 		"options" => [
