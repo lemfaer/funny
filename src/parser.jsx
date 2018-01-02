@@ -80,13 +80,12 @@ export default class Parser extends Component {
 	}
 
 	parse(id) {
-		this.refs.parse.open(id)
+		this.refs.parse.open(id, this.refs.progress)
 	}
 
 	gui() {
 		let last = this.last()
 		let running = last && !last.report
-		let ending = () => { this.setState({ "last" : null }) }
 
 		return (
 			<div>
@@ -102,7 +101,13 @@ export default class Parser extends Component {
 					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
 					onClick={this.parse.bind(this, running && last.id)}>
 						{ running ? "Watch" : "Start" }
-						{ running ? <Progress lid={last.id} eta={false} start={new Date() / 1000} end={ending} /> : "" }
+						{ !running ? "" :
+							<Progress
+								ref="progress"
+								lid={last.id}
+								eta={false}
+								start={new Date() / 1000}
+								end={() => { this.refs.parse.closed() }} />}
 				</button>
 
 				<button
@@ -156,7 +161,7 @@ export default class Parser extends Component {
 				<Header current="/parser" />
 				<div className="container">
 					<Page ref="page" />
-					<Parse ref="parse" />
+					<Parse ref="parse" end={this.last.bind(this, true)} />
 					{ this.gui.bind(this)() }
 					{ this.table.bind(this)() }
 				</div>

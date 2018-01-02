@@ -35,6 +35,7 @@ export default class Modal extends Component {
 		this.setState({ "open" : true })
 		document.body.classList.add("modal-open")
 		fadein(this.fade, .1, .5, null, 8)
+		this.props.open && this.props.open()
 		cb && cb()
 	}
 
@@ -50,6 +51,7 @@ export default class Modal extends Component {
 		this.setState({ "open" : false })
 		document.body.classList.remove("modal-open")
 		fadeout(this.fade, .5, .05, null, 10)
+		this.props.close && this.props.close()
 		cb && cb()
 	}
 

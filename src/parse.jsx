@@ -7,18 +7,27 @@ export default class Parse extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { "lid" : 0 }
+		this.state = { "lid" : 0, "origin" : null }
 	}
 
-	open(lid) {
+	open(lid, origin) {
 		this.refs.modal.open(() => {
-			this.setState({ "lid" : +lid })
+			this.setState({
+				"lid" : +lid,
+				"origin" : origin
+			})
 		})
 	}
 
 	close() {
-		this.refs.progress && this.refs.progress.clear()
 		this.refs.modal.close()
+	}
+
+	closed() {
+		if (this.state.lid) {
+			this.props.end && this.props.end()
+			this.refs.progress && this.refs.progress.clear()
+		}
 	}
 
 	start() {
@@ -68,7 +77,13 @@ export default class Parse extends Component {
 						</div>
 					</form>
 
-					: <Progress ref="progress" lid={this.state.lid} eta={true} start={new Date() / 1000} end={this.close.bind(this)} />
+					: <Progress
+						ref="progress"
+						eta={true}
+						lid={this.state.lid}
+						origin={this.state.origin}
+						start={new Date() / 1000}
+						end={this.close.bind(this)} />
 				}
 			</div>
 
@@ -83,7 +98,7 @@ export default class Parse extends Component {
 
 	render() {
 		let title = (!this.state.lid ? "Start parser" : "Parsing")
-		return <Modal ref="modal" title={title} content={this.form.bind(this)()} />
+		return <Modal ref="modal" title={title} content={this.form.bind(this)()} close={this.closed.bind(this)} />
 	}
 
 }

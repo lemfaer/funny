@@ -7,7 +7,7 @@ export default class Progress extends Component {
 		super(props)
 		this.state = {
 			"eta" : -1000,
-			"stats" : 0,
+			"stats" : null,
 			"watch" : 10,
 			"delay" : 0,
 			"gone" : 0,
@@ -23,6 +23,11 @@ export default class Progress extends Component {
 	}
 
 	load() {
+		if (this.props.origin) {
+			this.watch(this.props.origin.state.stats)
+			return
+		}
+
 		let xhr = new XMLHttpRequest()
 
 		xhr.open("GET", "/api/eta/" + this.props.lid)
@@ -61,12 +66,11 @@ export default class Progress extends Component {
 			return
 		}
 
-		if (stats && stats.created < this.props.start) {
-			console.log(stats.created, this.props.start)
-			stats = null
-		}
-
 		if (!stats || +stats.eta) {
+			if (stats && stats.created < this.props.start) {
+				stats = null
+			}
+
 			let eta   = (stats ? +stats.eta  : -1) * 1000
 			let time1 = (stats ? +stats.time : -1) * 1000
 			let time2 = (stats ? eta * .15   : -1  * 1000)
