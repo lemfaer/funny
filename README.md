@@ -1,4 +1,4 @@
 # frontend
-git clone https://github.com/lfunny/frontend.git -b v1.2 --recursive ./  
+git clone https://github.com/lfunny/frontend.git -b v1.3 --recursive ./  
 npm install --production  
-cd api && composer install --no-dev
+cd api && composer install --no-dev  

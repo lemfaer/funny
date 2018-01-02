@@ -102,7 +102,7 @@ export default class Parser extends Component {
 					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
 					onClick={this.parse.bind(this, running && last.id)}>
 						{ running ? "Watch" : "Start" }
-						{ running ? <Progress lid={last.id} eta={false} end={ending} /> : "" }
+						{ running ? <Progress lid={last.id} eta={false} start={new Date() / 1000} end={ending} /> : "" }
 				</button>
 
 				<button

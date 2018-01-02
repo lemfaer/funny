@@ -120,6 +120,7 @@ export default class Report extends Component {
 										<dd className="col-6">
 											<Progress
 												lid={this.state.id}
+												start={new Date() / 1000}
 												end={() => { this.setState({ "id" : 0 }) }}
 												eta={true} />
 										</dd>
@@ -165,7 +166,7 @@ export default class Report extends Component {
 									<h4 className="font-weight-normal">Average:</h4>
 									<dl className="row">
 										<dt className="col-6">Texts per page</dt>
-										<dd className="col-6">{this.state.report["average_parsed"]}</dd>
+										<dd className="col-6">{sprintf("%.2f", this.state.report["average_parsed"])}</dd>
 
 										<dt className="col-6">Time</dt>
 										<dd className="col-6">{sprintf("%.2fs", this.state.report["average_time"])}</dd>

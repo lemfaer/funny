@@ -68,7 +68,7 @@ export default class Parse extends Component {
 						</div>
 					</form>
 
-					: <Progress ref="progress" lid={this.state.lid} eta={true} end={this.close.bind(this)} />
+					: <Progress ref="progress" lid={this.state.lid} eta={true} start={new Date() / 1000} end={this.close.bind(this)} />
 				}
 			</div>
 

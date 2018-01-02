@@ -50,12 +50,20 @@ export default class Progress extends Component {
 	watch(stats) {
 		clearInterval(this.state.tick)
 
-		if (this.state.watch === 0) {
-			salert("Process error", false)
+		if (this.state.watch === false) {
+			this.props.end()
+			return
 		}
 
-		if (!this.state.watch) {
+		if (this.state.watch === 0) {
+			salert("Process error", false)
+			this.props.end()
 			return
+		}
+
+		if (stats && stats.created < this.props.start) {
+			console.log(stats.created, this.props.start)
+			stats = null
 		}
 
 		if (!stats || +stats.eta) {
@@ -70,7 +78,6 @@ export default class Progress extends Component {
 			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 })
 			return
 		}
-
 
 		this.setState({ "eta" : 0, "percent" : 100 })
 		salert(sprintf("Process #%d ended", this.props.lid), true)
@@ -101,7 +108,7 @@ export default class Progress extends Component {
 
 			{!this.props.eta ? "" :
 				<div className="d-flex justify-content-center mt-2">
-					<span className="h5 font-weight-normal">eta: {sprintf("%.2f", this.state.eta / 1000)}</span>
+					<span className="h5 font-weight-normal">eta: {sprintf("%.2fs", this.state.eta / 1000)}</span>
 				</div>}
 			</div>
 		)

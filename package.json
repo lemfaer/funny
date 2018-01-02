@@ -1,6 +1,8 @@
 {
+
 	"scripts": {
-		"watch": "webpack --watch"
+		"watch": "webpack --watch --progress",
+		"build": "webpack --progress"
 	},
 
 	"dependencies": {
@@ -20,4 +22,5 @@
 		"babel-preset-env": "1.*",
 		"babel-loader": "7.*"
 	}
+
 }
