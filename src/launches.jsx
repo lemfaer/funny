@@ -106,7 +106,7 @@ export default class Launches extends Component {
 				"We've got %(total_positive_parsed)d new positive texts here =)",
 				"Negative text count - %(total_negative_parsed)d"
 			]
-		};
+		}
 
 		let short = []
 		let report = JSON.parse(launch.report)

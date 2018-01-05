@@ -45,7 +45,7 @@ export default class Page extends Component {
 			return "Link cannot be empty"
 		}
 
-		let matched = false;
+		let matched = false
 		for (let name in pages) {
 			let page = pages[name]
 			let regex = new RegExp(page.match, page.flags)
@@ -68,7 +68,7 @@ export default class Page extends Component {
 		obj.link = encodeURI(obj.link)
 
 		if (!/^https?:\/\//i.test(obj.link)) {
-			obj.link = "http://" + obj.link;
+			obj.link = "http://" + obj.link
 		}
 
 		for (let name in pages) {
