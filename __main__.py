@@ -6,7 +6,7 @@ from db import *
 
 cnx = connect(**base)
 delete_texts(cnx)
-
 lid = insert_launch(cnx)
 stats = parse_links(cnx, lid, ll)
 create_report(cnx, lid, ll, stats)
+cnx.close()
