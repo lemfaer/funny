@@ -6,7 +6,7 @@ from random import randint
 class SVM:
 	""" Support vector machine """
 
-	def __init__(self, kernel, c = 1, tol = 1e-4, atol = 1e-7, lpass = 1e1, liter = 1e4):
+	def __init__(self, kernel, c = 1, tol = 1e-4, lpass = 10, liter = 1000):
 		self.__dict__.update(locals())
 
 	def train(self, data, labels):
