@@ -22,12 +22,12 @@ def select_tavg(cnx, mode, modifier):
 	cursor = cnx.cursor()
 	cursor.execute("""
 		SELECT
-			sum(@n := json_extract(info, '$.operations')) * %s,
+			sum(@n := json_extract(info, '$.operations')),
 			avg(time / (@n * %s))
 		FROM stats
 		WHERE type = 'classifier'
 			AND json_contains(info, %s, '$.stage')
-	""", (modifier, modifier, '"%s"' % mode))
+	""", (modifier, '"%s"' % mode))
 	return cursor.fetchone()
 
 def select_texts(cnx):
