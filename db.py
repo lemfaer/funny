@@ -23,6 +23,7 @@ def select_tavg(cnx, mode, modifier):
 	cursor.execute("""
 		SELECT
 			sum(@n := json_extract(info, '$.operations')),
+			sum(json_extract(info, '$.iterations')),
 			avg(time / (@n * %s))
 		FROM stats
 		WHERE type = 'classifier'

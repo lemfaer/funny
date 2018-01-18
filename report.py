@@ -1,30 +1,33 @@
 from db import *
 
-def create_report(cnx, lid, kernel, c, sigma, test, ngrams, stats, obj, sen):
+def create_report(cnx, lid, stats, top, cargs):
 	if len(stats) != 3:
 		return
 
-	obj_svm, obj_perf, obj_top = obj
-	sen_svm, sen_perf, sen_top = sen
+	print(stats)
+	otop, stop = top
+	ps = stats["prepare"]["stats"]
+	os = stats["objective"]["stats"]
+	ss = stats["sentiment"]["stats"]
 
-	obj_train_size = len(obj_svm.data)
-	sen_train_size = len(sen_svm.data)
-
-	prepare_time = sum([ s["time"] for s in stats["prepare"] ])
-	objective_time = sum([ s["time"] for s in stats["objective"] ])
-	sentiment_time = sum([ s["time"] for s in stats["sentiment"] ])
-	total_texts = sum([ s["texts"] for s in stats["prepare"] ])
-	total_words = sum([ s["words"] for s in stats["prepare"] ])
+	prepare_time = sum([ s["time"] for s in ps ])
+	objective_time = sum([ s["time"] for s in os ])
+	sentiment_time = sum([ s["time"] for s in ss ])
+	total_texts = sum([ s["texts"] for s in ps ])
+	total_words = sum([ s["words"] for s in ps ])
 
 	update_launch(cnx, lid, {
-		"kernel" : kernel,
-		"ngrams" : ngrams,
-		"sigma" : sigma,
-		"test" : test,
-		"c" : c,
+		"kernel" : cargs["kernel"],
+		"ngrams" : cargs["ngrams"],
+		"lpass" : cargs["lpass"],
+		"liter" : cargs["liter"],
+		"sigma" : cargs["sigma"],
+		"test" : cargs["test"],
+		"tol" : cargs["tol"],
+		"c" : cargs["c"],
 
 		"prepare" : {
-			"estimation" : stats["prepare"][0]["eta"] + stats["prepare"][0]["time"],
+			"estimation" : ps[0]["eta"] + ps[0]["time"],
 			"time" : prepare_time,
 			"texts" : total_texts,
 			"total_words" : total_words,
@@ -32,18 +35,18 @@ def create_report(cnx, lid, kernel, c, sigma, test, ngrams, stats, obj, sen):
 		},
 
 		"objective" : {
-			"estimation" : stats["objective"][0]["eta"] + stats["objective"][0]["time"],
+			"estimation" : os[0]["eta"] + os[0]["time"],
+			"train" : stats["objective"]["train"],
+			"test" : stats["objective"]["test"],
 			"time" : objective_time,
-			"train" : obj_train_size,
-			"test" : obj_perf,
-			"top" : obj_top
+			"top" : otop
 		},
 
 		"sentiment" : {
-			"estimation" : stats["sentiment"][0]["eta"] + stats["sentiment"][0]["time"],
+			"estimation" : ss[0]["eta"] + ss[0]["time"],
+			"train" : stats["sentiment"]["train"],
+			"test" : stats["sentiment"]["test"],
 			"time" : sentiment_time,
-			"train" : sen_train_size,
-			"test" : sen_perf,
-			"top" : sen_top
+			"top" : stop
 		}
 	})

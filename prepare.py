@@ -4,6 +4,7 @@ from functools import partial
 from pysvm.kernel import *
 from index import Index
 from time import time
+import collections
 from db import *
 
 def prepare(cnx, lid, ngrams, test):
@@ -111,3 +112,12 @@ def kernel(name, sigma):
 		kernel = partial(rbf, sigma=sigma)
 
 	return kernel
+
+def update(d, *uu):
+	for u in uu:
+		for k, v in u.items():
+			if isinstance(v, collections.Mapping):
+				d[k] = update(d.get(k, {}), v)
+			else:
+				d[k] = v
+	return d
