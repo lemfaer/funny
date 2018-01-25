@@ -4,7 +4,6 @@ def create_report(cnx, lid, stats, top, cargs):
 	if len(stats) != 3:
 		return
 
-	print(stats)
 	otop, stop = top
 	ps = stats["prepare"]["stats"]
 	os = stats["objective"]["stats"]

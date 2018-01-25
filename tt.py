@@ -1,10 +1,11 @@
+from plot import create_plot
 from db import store_result
 from time import time
 
-def train(svm, mode, data, labels, cnx):
+def train(svm, mode, data, labels, cnx, lid):
 	start = time()
 	svm.train(data, labels)
-	store_result(cnx, mode, svm.b, svm.alpha, svm.data)
+	store_result(cnx, lid, mode, svm.b, svm.alpha, svm.data)
 	end = time() - start
 
 	return {

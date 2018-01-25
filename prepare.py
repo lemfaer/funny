@@ -69,7 +69,7 @@ def data(index, test):
 	texts, words = index.delta()
 
 	for tid, delta in texts.items():
-		data.append([ delta, delta ])
+		data.append([ delta, 0 ])
 		labels.append(index.labels[tid])
 
 	train = 1 - (test / 100)

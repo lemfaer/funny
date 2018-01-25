@@ -19,7 +19,7 @@ for mode, (trset, teset) in zip([ "objective", "sentiment" ], dl):
 	svm = SVM(k, c=cargs["c"], tol=cargs["tol"], lpass=cargs["lpass"], liter=cargs["liter"])
 
 	svm = watch(svm, mode, len(trset[0]), estimate, cnx, lid, cargs)
-	tr = train(svm, mode, trset[0], trset[1], cnx)
+	tr = train(svm, mode, trset[0], trset[1], cnx, lid)
 	te = test(svm, mode, teset[0], teset[1])
 	svm, ts = flush(svm, mode)
 	stats = update(stats, tr, te, ts)

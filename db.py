@@ -52,10 +52,10 @@ def insert_stats(cnx, lid, stats):
 	cursor.close()
 	cnx.commit()
 
-def store_result(cnx, type, b, alpha, data):
+def store_result(cnx, lid, type, b, alpha, data):
 	cursor = cnx.cursor()
-	cursor.execute("INSERT INTO weights SET type = %s, b = %s, alpha = %s, data = %s",
-		(type, b, json.dumps(alpha), json.dumps(data)))
+	cursor.execute("INSERT INTO weights SET type = %s, launch_id = %s, b = %s, alpha = %s, data = %s",
+		(type, lid, b, json.dumps(alpha), json.dumps(data)))
 
 	cursor.close()
 	cnx.commit()
