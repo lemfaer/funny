@@ -120,7 +120,7 @@ class LaunchTest extends TestCase {
 
 		$launch->db = $db;
 		$launch->load($data["id"]);
-		$result = $launch->get([ "id", "type", "report", "created", "updated" ]);
+		$result = $launch->get([ "id", "type", "report", "b", "alpha", "data", "created", "updated" ]);
 
 		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
 		$this->assertSame($result, $expected_result);
@@ -132,15 +132,21 @@ class LaunchTest extends TestCase {
 				"data" => [
 					"id" => 42,
 					"type" => "parser",
-					"report" => null
+					"report" => null,
+					"b" => "-0.664181",
+					"alpha" => [],
+					"data" => []
 				],
 
-				"query" => "SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM launch WHERE id = 42",
+				"query" => "SELECT b.*, a.*, unix_timestamp(a.created) AS created, unix_timestamp(a.updated) AS updated FROM launch AS a INNER JOIN weights AS b ON a.id = b.launch_id WHERE a.id = 42",
 
 				"result" => [
 					"id" => 42,
 					"type" => "parser",
 					"report" => null,
+					"b" => "-0.664181",
+					"alpha" => [],
+					"data" => [],
 					"created" => null,
 					"updated" => null
 				]

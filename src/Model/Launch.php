@@ -36,10 +36,13 @@ class Launch extends Model {
 	 * @param int $id launch id
 	 */
 	function load(int $id) {
-		$query = "SELECT *,
-			unix_timestamp(created) AS created,
-			unix_timestamp(updated) AS updated
-			FROM launch WHERE id = ?";
+		$query = "SELECT b.*, a.*,
+			unix_timestamp(a.created) AS created,
+			unix_timestamp(a.updated) AS updated
+			FROM launch AS a
+			INNER JOIN weights AS b
+				ON a.id = b.launch_id
+			WHERE a.id = ?";
 
 		$statm = $this->db->prepare($query);
 		$statm->execute([ $id ]);

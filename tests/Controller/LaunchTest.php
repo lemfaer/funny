@@ -88,7 +88,7 @@ class LaunchTest extends TestCase {
 
 		$model->expects($this->any())
 			->method("get")
-			->with($this->equalTo([ "id", "type", "report", "created", "updated" ]))
+			->with($this->equalTo([ "id", "type", "report", "created", "updated", "b", "alpha", "data" ]))
 			->will($this->returnCallback(function () use ($data) {
 				return $data;
 			}));
