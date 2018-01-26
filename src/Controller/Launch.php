@@ -6,8 +6,7 @@ use Funny\Model\Stats;
 
 class Launch extends Controller {
 
-	var $fweights = [ "b", "alpha", "data" ];
-	var $flaunch = [ "id", "type", "report", "created", "updated" ];
+	var $flaunch = [ "id", "type", "report", "weights", "created", "updated" ];
 	var $fstats = [ "id", "type", "launch_id", "time", "eta", "info", "created", "updated" ];
 
 	/** GET /launches/{limit},{offset} */
@@ -23,8 +22,7 @@ class Launch extends Controller {
 	/** GET /launch/{id} */
 	function get(Model $launch, int $id) {
 		$this->safe([ $launch, "load" ], $id);
-		$fields = array_merge($this->flaunch, $this->fweights);
-		$result = $launch->get($fields);
+		$result = $launch->get($this->flaunch);
 		$result = json_encode($result);
 		return $result;
 	}

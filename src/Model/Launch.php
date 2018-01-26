@@ -36,17 +36,20 @@ class Launch extends Model {
 	 * @param int $id launch id
 	 */
 	function load(int $id) {
-		$query = "SELECT b.*, a.*,
-			unix_timestamp(a.created) AS created,
-			unix_timestamp(a.updated) AS updated
-			FROM launch AS a
-			INNER JOIN weights AS b
-				ON a.id = b.launch_id
-			WHERE a.id = ?";
+		$query1 = "SELECT *,
+			unix_timestamp(created) AS created,
+			unix_timestamp(updated) AS updated
+			FROM launch
+			WHERE id = ?";
 
-		$statm = $this->db->prepare($query);
+		$statm = $this->db->prepare($query1);
 		$statm->execute([ $id ]);
 		$this->set($statm->fetch());
+
+		$query2 = "SELECT * FROM weights WHERE launch_id = ?";
+		$statm = $this->db->prepare($query2);
+		$statm->execute([ $id ]);
+		$this->set([ "weights" => $statm->fetchAll() ]);
 	}
 
 	/**

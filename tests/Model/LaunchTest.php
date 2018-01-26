@@ -81,7 +81,7 @@ class LaunchTest extends TestCase {
 	 * @covers \Funny\Model\Model::set
 	 * @dataProvider provider_load
 	 */
-	function test_load($data, $expected_query, $expected_result) {
+	function test_load($data, $expected_queries, $expected_result) {
 		$launch = $this->getMockBuilder(Launch::class)
 			->disableOriginalConstructor()
 			->setMethods([ "pass" ])
@@ -94,35 +94,39 @@ class LaunchTest extends TestCase {
 
 		$statm = $this->getMockBuilder(PDOStatement::class)
 			->disableOriginalConstructor()
-			->setMethods([ "execute", "fetch" ])
+			->setMethods([ "execute", "fetch", "fetchAll" ])
 			->getMock();
 
 		// check query
-		$query = null;
-		$db->expects($this->once())
+		$queries = [];
+		$db->expects($this->exactly(2))
 			->method("prepare")
-			->will($this->returnCallback(function ($rquery) use ($statm, &$query) {
-				$query = $rquery;
+			->will($this->returnCallback(function ($rquery) use ($statm, &$queries) {
+				$queries[] = $rquery;
 				return $statm;
 			}));
 
 		// replace binds
-		$statm->expects($this->once())
+		$statm->expects($this->exactly(2))
 			->method("execute")
-			->will($this->returnCallback(function ($binds) use (&$query) {
+			->will($this->returnCallback(function ($binds) use (&$queries) {
 				$id = array_shift($binds);
-				$query = str_replace("?", $id, $query);
+				$queries = str_replace("?", $id, $queries);
 			}));
 
 		$statm->expects($this->once())
 			->method("fetch")
 			->will($this->returnValue($data));
 
+		$statm->expects($this->once())
+			->method("fetchAll")
+			->will($this->returnValue([]));
+
 		$launch->db = $db;
 		$launch->load($data["id"]);
 		$result = $launch->get([ "id", "type", "report", "b", "alpha", "data", "created", "updated" ]);
 
-		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
+		$this->assertSame(preg_replace("/\s+/", " ", $queries), $expected_queries);
 		$this->assertSame($result, $expected_result);
 	}
 
@@ -138,7 +142,10 @@ class LaunchTest extends TestCase {
 					"data" => []
 				],
 
-				"query" => "SELECT b.*, a.*, unix_timestamp(a.created) AS created, unix_timestamp(a.updated) AS updated FROM launch AS a INNER JOIN weights AS b ON a.id = b.launch_id WHERE a.id = 42",
+				"queries" => [
+					"SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM launch WHERE id = 42",
+					"SELECT * FROM weights WHERE launch_id = 42"
+				],
 
 				"result" => [
 					"id" => 42,
