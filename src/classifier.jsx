@@ -1,4 +1,6 @@
 import React, { Component } from "react"
+import Classify from "./classify.jsx"
+import Progress from "./progress.jsx"
 import { salert } from "./alert.js"
 import Header from "./header.jsx"
 import Text from "./text.jsx"
@@ -7,11 +9,35 @@ export default class Classifier extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { "texts" : null }
+		this.state = { "last" : null,"texts" : null }
 	}
 
 	componentDidMount() {
 		document.title = "Classifier"
+	}
+
+	last(update) {
+		if (this.state.last && !update) {
+			return this.state.last
+		}
+
+		let xhr = new XMLHttpRequest()
+
+		xhr.open("GET", "/api/launch/classifier")
+		xhr.onload = () => {
+			if (xhr.readyState !== 4) {
+				return
+			}
+
+			if (xhr.status === 200) {
+				let json = xhr.responseText
+				let last = JSON.parse(json)
+				this.setState({ "last" : last })
+			}
+		}
+
+		xhr.send()
+		return null
 	}
 
 	texts(update) {
@@ -71,8 +97,44 @@ export default class Classifier extends Component {
 		this.refs.text.open(id, txt, cls, temp)
 	}
 
-	start() {
-		console.log("start")
+	classify(id) {
+		this.refs.classify.open(id, this.refs.progress)
+	}
+
+	gui() {
+		let last = this.last()
+		let running = last && !last.report
+
+		return (
+			<div>
+				<button
+					type="button"
+					className="btn btn-light float-right my-3"
+					onClick={this.text.bind(this)}>
+						Add text
+				</button>
+
+				<button
+					type="button"
+					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
+					onClick={this.classify.bind(this, running && last.id)}>
+						{ running ? "Watch" : "Start" }
+						{ !running ? "" :
+							<Progress
+								ref="progress"
+								lid={last.id}
+								eta={false}
+								end={() => { this.refs.classify.close() }} />}
+				</button>
+
+				<button
+					type="button"
+					className="btn btn-light float-right my-3"
+					onClick={this.texts.bind(this, true)}>
+						<span className="octicon octicon-sync"></span>
+				</button>
+			</div>
+		)
 	}
 
 	table() {
@@ -115,11 +177,8 @@ export default class Classifier extends Component {
 				<Header current="/classifier" />
 				<div className="container">
 					<Text ref="text" />
-					<button type="button" className="btn btn-light float-right my-3" onClick={this.text.bind(this)}>Add text</button>
-					<button type="button" className="btn btn-warning float-right m-3" onClick={this.start.bind(this)}>Start</button>
-					<button type="button" className="btn btn-light float-right my-3" onClick={this.texts.bind(this, true)}>
-						<span className="octicon octicon-sync"></span>
-					</button>
+					<Classify ref="classify" end={this.last.bind(this, true)} />
+					{ this.gui.bind(this)() }
 					{ this.table.bind(this)() }
 				</div>
 			</div>

@@ -1,5 +1,12 @@
 {
 
+	"ngrams" : {
+		"1" : "unigram",
+		"2" : "bigram",
+		"4" : "trigram",
+		"8" : "chars4"
+	},
+
 	"pages" : {
 		"wiki" : {
 			"title" : "wiki",

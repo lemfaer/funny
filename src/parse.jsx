@@ -82,15 +82,14 @@ export default class Parse extends Component {
 						eta={true}
 						lid={this.state.lid}
 						origin={this.state.origin}
-						start={new Date() / 1000}
 						end={this.close.bind(this)} />
 				}
 			</div>
 
 			<div className="modal-footer">
-				<button form="page-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
+				<button type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
 				{this.state.lid ? "" :
-					<button form="page-form" type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>Start</button>}
+					<button type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>Start</button>}
 			</div>
 			</div>
 		)

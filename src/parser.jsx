@@ -106,7 +106,6 @@ export default class Parser extends Component {
 								ref="progress"
 								lid={last.id}
 								eta={false}
-								start={new Date() / 1000}
 								end={() => { this.refs.parse.closed() }} />}
 				</button>
 

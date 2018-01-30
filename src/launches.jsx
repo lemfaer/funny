@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { salert } from "./alert.js"
 import Bricklayer from "bricklayer"
 import Header from "./header.jsx"
-import Chart from "chart.js"
+import { chart } from "./charts"
 
 export default class Launches extends Component {
 
@@ -26,39 +26,11 @@ export default class Launches extends Component {
 		this.bricklayer = new Bricklayer(this.refs.bricks)
 
 		// create all charts
-		for (let chart of document.getElementsByClassName("chart")) {
-			let index = chart.dataset.index
+		for (let element of document.getElementsByClassName("chart")) {
+			let type = element.dataset.type
+			let index = element.dataset.index
 			let report = JSON.parse(this.state.launches[index].report)
-
-			let data = [
-				report["total_normal_parsed"],
-				report["total_positive_parsed"],
-				report["total_negative_parsed"]
-			]
-
-			let chbar = new Chart(chart.getContext("2d"), {
-				"type" : "bar",
-				"data" : { 
-					"labels" : [ "normal", "positive", "negative" ],
-					"datasets" : [{
-						"label" : "count",
-						"data" : data,
-						"backgroundColor" : [
-							'rgba(255, 99, 132, 0.2)',
-							'rgba(54, 162, 235, 0.2)',
-							'rgba(255, 206, 86, 0.2)'
-						],
-						"borderColor" : [
-							'rgba(255, 99, 132, 1)',
-							'rgba(54, 162, 235, 1)',
-							'rgba(255, 206, 86, 1)'
-						],
-						"borderWidth" : 1
-					}]
-				}
-			})
-
-			chart.classList.remove("d-none")
+			chart(element, report, type)
 		}
 	}
 
@@ -93,9 +65,15 @@ export default class Launches extends Component {
 		return []
 	}
 
-	card(launch, index) {
+	short(launch) {
+		let charts = {
+			"parser" : [ "texts" ],
+			"classifier" : [ "stages", "perf" ]
+		}
+
 		let strings = {
 			"empty" : "Not done yet",
+
 			"parser" : [
 				"Parser worked realy hard to get thoose %(total_parsed)d texts.",
 				"Page loading is hard to do. Average loading time is near to %(average_time_loaded).2f seconds.",
@@ -105,29 +83,55 @@ export default class Launches extends Component {
 				"There is a %(total_normal_parsed)d new objective texts in classifier section.",
 				"We've got %(total_positive_parsed)d new positive texts here =)",
 				"Negative text count - %(total_negative_parsed)d"
+			],
+
+			"classifier" : [
+				"Average text was split into %(prepare.average_words).2f words before algorithm start.",
+				"Algorithm used %(objective.train.size)d texts for training objective/subjective recognition and %(objective.test.size)d for testing.",
+				"Training set size of positive/negative classifier was %(sentiment.train.size)d texts, testing set - %(sentiment.test.size)d",
+				"Classification efficiency: %(objective.test.perf).1f for objectiveness and %(sentiment.test.perf).1f for positiveness.",
+				"Words used mostly in objective texts: %(objective.top[0][0][0])s, %(objective.top[0][1][0])s, %(objective.top[0][2][0])s.",
+				"Those words are most common in subjective texts: %(objective.top[1][0][0])s, %(objective.top[1][1][0])s and %(objective.top[1][2][0])s.",
+				"Top words used in positive texts: %(sentiment.top[0][0][0])s, %(sentiment.top[0][1][0])s and %(sentiment.top[0][2][0])s.",
+				"Most unfavorable words were: %(sentiment.top[1][0][0])s, %(sentiment.top[1][1][0])s and %(sentiment.top[1][2][0])s."
 			]
 		}
 
-		let short = []
+		let string = []
 		let report = JSON.parse(launch.report)
-		let str = strings[launch.type]
-		let chart = false
+		let chart = null
 
 		if (report) {
+			charts = charts[launch.type]
+			strings = strings[launch.type]
+
 			for (let ch of [ 1, .3, .1 ]) {
 				if (Math.random() < ch) {
-					let i = Math.floor(Math.random() * str.length)
-					str[i] && short.push(vsprintf(str[i], report))
-					delete str[i]
+					let i = Math.floor(Math.random() * strings.length)
+					strings[i] && string.push(vsprintf(strings[i], report))
+					delete strings[i]
 				}
 			}
 
+			string.sort((a, b) => {
+				return a.length - b.length
+			})
+
 			if (Math.random() < .1) {
-				chart = true
+				let i = Math.floor(Math.random() * charts.length)
+				charts[i] && (chart = charts[i])
 			}
 		} else {
-			short.push(strings["empty"])
+			string.push(strings["empty"])
 		}
+
+		return [ string, chart ]
+	}
+
+	card(launch, index) {
+		var short = this.short(launch),
+			strings = short[0],
+			chart = short[1]
 
 		return (
 			<div className="card my-3 mx-2" key={index}>
@@ -137,10 +141,14 @@ export default class Launches extends Component {
 
 				<div className="card-body">
 					{!chart ? "" : (
-						<canvas className="chart d-none mb-2" data-index={index}></canvas>
+						<canvas
+							className="chart d-none mb-2"
+							data-index={index}
+							data-type={chart}>
+						</canvas>
 					)}
 
-					{short.map((string, index) => {
+					{strings.map((string, index) => {
 						return <p key={index} className="card-text mb-1">{string}</p>
 					})}
 

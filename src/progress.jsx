@@ -8,6 +8,7 @@ export default class Progress extends Component {
 		this.state = {
 			"eta" : -1000,
 			"stats" : null,
+			"start" : new Date() / 1000,
 			"watch" : 10,
 			"delay" : 0,
 			"gone" : 0,
@@ -19,7 +20,7 @@ export default class Progress extends Component {
 	}
 
 	componentDidMount() {
-		this.watch()
+		this.load()
 	}
 
 	load() {
@@ -56,48 +57,58 @@ export default class Progress extends Component {
 		clearInterval(this.state.tick)
 
 		if (this.state.watch === false) {
-			this.props.end()
+			this.props.end && this.props.end()
 			return
 		}
 
 		if (this.state.watch === 0) {
 			salert("Process error", false)
-			this.props.end()
+			this.props.end && this.props.end()
 			return
 		}
 
-		if (!stats || +stats.eta) {
-			if (stats && stats.created < this.props.start) {
-				stats = null
-			}
+		if (stats && stats.created - this.state.start < 0) {
+			stats = null
+		}
 
+		if (stats && this.state.stats && stats.id == this.state.stats.id) {
+			stats = null
+		}
+
+		if (!stats || +stats.eta) {
 			let eta   = (stats ? +stats.eta  : -1) * 1000
 			let time1 = (stats ? +stats.time : -1) * 1000
 			let time2 = (stats ? eta * .15   : -1  * 1000)
 			let delay = (stats ? Math.max(this.state.delay, time1, time2) : 500)
-			let watch = (!stats || stats.id === this.state.stats ? this.state.watch - 1 : 10)
+			let watch = (stats ? 10 : this.state.watch - 1)
 
 			setTimeout(this.load.bind(this), delay)
 			let tick = setInterval(this.tick.bind(this), this.state.tickin)
-			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 })
+			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 }, this.props.stats)
 			return
 		}
 
-		this.setState({ "eta" : 0, "percent" : 100 })
-		salert(sprintf("Process #%d ended", this.props.lid), true)
-		this.props.end()
+		this.setState({ "eta" : 0, "stats" : stats, "percent" : 100 })
+		this.props.end && this.props.end()
 	}
 
 	tick() {
 		let gone = this.state.gone + this.state.tickin
 		let tick = this.state.tickout + this.state.tickin
-		let percent = 100 * (this.state.eta > 0 ? gone / (gone - tick + this.state.eta) : 0)
+		let percent = (this.state.eta > 0 ? 100 * gone / (gone - tick + this.state.eta) : this.state.percent)
 		this.setState({ "gone" : gone, "percent" : percent, "tickout" : tick })
 	}
 
 	clear() {
 		clearInterval(this.state.tick)
 		this.setState({ "watch" : false })
+		salert(sprintf("Process #%d ended", this.props.lid), true)
+	}
+
+	reset() {
+		clearInterval(this.state.tick)
+		this.setState({ "watch" : 10, "start" : new Date() / 1000, "gone" : 0 })
+		this.load()
 	}
 
 	render() {
