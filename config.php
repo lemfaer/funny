@@ -8,7 +8,8 @@ return [
 		"root" => __DIR__,
 		"src" => __DIR__ . "/src",
 		"tests" => __DIR__ . "/tests",
-		"parser" => __DIR__ . "/../parser"
+		"parser" => __DIR__ . "/../parser",
+		"classifier" => __DIR__ . "/../classifier"
 	],
 
 	"db" => [
@@ -25,6 +26,7 @@ return [
 
 	"routes" => [
 		[ "POST", "~^start/parser$~", [ \Funny\Controller\Start::class, "parser" ] ],
+		[ "POST", "~^start/classifier$~", [ \Funny\Controller\Start::class, "classifier" ] ],
 
 		[ "GET", "~^launches/([0-9]+),?([0-9]+)?$~", [ \Funny\Controller\Launch::class, "all" ] ],
 		[ "GET", "~^launch/([0-9]+)$~", [ \Funny\Controller\Launch::class, "get" ] ],

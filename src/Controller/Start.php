@@ -22,8 +22,42 @@ class Start extends Controller {
 		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $minlen);
 		$this->run($command);
 
-		usleep(500 * 1000);
+		usleep(1000 * 1000);
 		$this->safe([ $launch, "last" ], "parser");
+
+		return $launch->id;
+	}
+
+	/** POST /start/classifier */
+	function classifier(Launch $launch) {
+		$params = $this->input();
+
+		$host = $this->config["db"]["host"];
+		$base = $this->config["db"]["base"];
+		$user = $this->config["db"]["user"];
+		$pass = $this->config["db"]["pass"];
+		$path = $this->config["app"]["classifier"];
+		$path = escapeshellcmd(realpath($path));
+		$python = $this->config["app"]["python"];
+
+		$sigma = $params["sigma"];
+		$kernel = $params["kernel"];
+		$ngrams = $params["ngrams"];
+		$lpass = $params["lpass"];
+		$liter = $params["liter"];
+		$test = $params["test"];
+		$tol = $params["tol"];
+		$c = $params["c"];
+
+		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --sigma %f '
+			. '--kernel "%s" --ngrams %d --lpass %d --liter %d --test %d --tol %f --c %f';
+
+		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $sigma,
+			$kernel, $ngrams, $lpass, $liter, $test, $tol, $c);
+
+		$this->run($command);
+		usleep(1000 * 1000);
+		$this->safe([ $launch, "last" ], "classifier");
 
 		return $launch->id;
 	}
