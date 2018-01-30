@@ -1,4 +1,3 @@
-from plot import create_plot
 from db import store_result
 from time import time
 
