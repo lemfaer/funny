@@ -53,16 +53,19 @@ export default class Classify extends Component {
 
 	ended() {
 		if (!this.refs.progress.state.watch) {
+			this.refs.progress.setState({ "alert" : true })
 			this.close(true)
 			return
 		}
 
 		if (this.stage() === this.stages[2]) {
+			this.refs.progress.setState({ "alert" : true })
 			this.close(true)
 			return
 		}
 
 		// next phase
+		this.refs.progress.setState({ "alert" : false })
 		this.refs.progress.reset()
 	}
 

@@ -15,7 +15,8 @@ export default class Progress extends Component {
 			"tick" : null,
 			"tickin" : 100,
 			"tickout" : 0,
-			"percent" : 0
+			"percent" : 0,
+			"alert" : true
 		}
 	}
 
@@ -62,7 +63,7 @@ export default class Progress extends Component {
 		}
 
 		if (this.state.watch === 0) {
-			salert("Process error", false)
+			this.state.alert && salert("Process error", false)
 			this.props.end && this.props.end()
 			return
 		}
@@ -88,8 +89,8 @@ export default class Progress extends Component {
 			return
 		}
 
-		this.setState({ "eta" : 0, "stats" : stats, "percent" : 100 })
-		this.props.end && this.props.end()
+		this.setState({ "eta" : 0, "stats" : stats, "percent" : 100 }, this.props.end)
+		this.state.alert && salert(sprintf("Process #%d ended", this.props.lid), true)
 	}
 
 	tick() {
@@ -102,7 +103,6 @@ export default class Progress extends Component {
 	clear() {
 		clearInterval(this.state.tick)
 		this.setState({ "watch" : false })
-		salert(sprintf("Process #%d ended", this.props.lid), true)
 	}
 
 	reset() {
