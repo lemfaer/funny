@@ -81,7 +81,7 @@
 	"prev" : "prev",
 	"next" : "next",
 	"count" : "count",
-	"launch_num" : "Launch #",
+	"launch_num" : "Launch #%d",
 	"general_col" : "General:",
 	"total_col" : "Total:",
 	"average_col" : "Average:",
