@@ -32,7 +32,7 @@ export default class Progress extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/eta/" + this.props.lid)
+		xhr.open("GET", sprintf("/api/eta/%d/", this.props.lid))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -63,7 +63,7 @@ export default class Progress extends Component {
 		}
 
 		if (this.state.watch === 0) {
-			this.state.alert && salert("Process error", false)
+			this.state.alert && salert(__("process_error"), false)
 			this.props.end && this.props.end()
 			return
 		}
@@ -90,7 +90,7 @@ export default class Progress extends Component {
 		}
 
 		this.setState({ "eta" : 0, "stats" : stats, "percent" : 100 }, this.props.end)
-		this.state.alert && salert(sprintf("Process #%d ended", this.props.lid), true)
+		this.state.alert && salert(sprintf(__("process_num_ended"), this.props.lid), true)
 	}
 
 	tick() {
@@ -117,13 +117,13 @@ export default class Progress extends Component {
 			<div className="progress">
 				<div 
 					className="progress-bar progress-bar-striped progress-bar-animated bg-warning"
-					style={{ "width" : this.state.percent + "%" }}
+					style={{ "width" : sprintf(__("format_int_percent"), this.state.percent) }}
 					/>
 			</div>
 
 			{!this.props.eta ? "" :
 				<div className="d-flex justify-content-center mt-2">
-					<span className="h5 font-weight-normal">eta: {sprintf("%.2fs", this.state.eta / 1000)}</span>
+					<span className="h5 font-weight-normal">{__("eta") + sprintf(__("format_float_seconds"), this.state.eta / 1000)}</span>
 				</div>}
 			</div>
 		)

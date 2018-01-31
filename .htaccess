@@ -6,10 +6,14 @@ RewriteBase /
 RewriteCond %{REQUEST_METHOD} OPTIONS
 RewriteRule ^(.*)$ blank.html [L,NC]
 
+RewriteCond %{REQUEST_URI} !(/$|\.) 
+RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^/?api(.*)$ $1 [L,P,NC]
-RewriteRule ^/?(#.*)?$ bin/index.html [L,NC]
+RewriteRule ^/?(\w{2})/?(#.*)?$ bin/$1/index.html [L,NC]
+RewriteRule ^/?(#.*)?$ bin/en/index.html [L,NC]
 RewriteRule ^/?[\w/,]+$ api/index.php [L,NC]
 
 SetEnvIf Request_Method OPTIONS opts

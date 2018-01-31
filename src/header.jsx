@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 export default class Header extends Component {
 
 	links() {
-		let names = [ "Home", "Predict", "Parser", "Classifier", "Reports" ]
+		let names = [ __("home"), __("predict"), __("parser"), __("classifier"), __("reports") ]
 		let links = [ "/", "/predict", "/parser", "/classifier", "/reports" ]
 		let current = this.props.current || "/"
 

@@ -13,7 +13,7 @@ export default class Launches extends Component {
 	}
 
 	componentDidMount() {
-		document.title = "Reports"
+		document.title = __("reports")
 	}
 
 	componentWillUpdate() {
@@ -41,7 +41,7 @@ export default class Launches extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", sprintf("/api/launches/%s,%s", limit, (page - 1) * limit))
+		xhr.open("GET", sprintf("/api/launches/%s,%s/", limit, (page - 1) * limit))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -57,7 +57,7 @@ export default class Launches extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't load launches", false)
+				salert(__("cant_load_launches"), false)
 			}
 		}
 
@@ -71,32 +71,7 @@ export default class Launches extends Component {
 			"classifier" : [ "stages", "perf" ]
 		}
 
-		let strings = {
-			"empty" : "Not done yet",
-
-			"parser" : [
-				"Parser worked realy hard to get thoose %(total_parsed)d texts.",
-				"Page loading is hard to do. Average loading time is near to %(average_time_loaded).2f seconds.",
-				"We got rid of parsed texts with length less than %(minimum_text_length)d symbols.",
-				"We spend a lot of time loading (%(total_time_loaded).2f s) and parsing (%(total_time_parsed).2f s) all pages.",
-				"Original time estimated - %(original_estimate).2f seconds, real time - %(total_time).2f seconds.",
-				"There is a %(total_normal_parsed)d new objective texts in classifier section.",
-				"We've got %(total_positive_parsed)d new positive texts here =)",
-				"Negative text count - %(total_negative_parsed)d"
-			],
-
-			"classifier" : [
-				"Average text was split into %(prepare.average_words).2f words before algorithm start.",
-				"Algorithm used %(objective.train.size)d texts for training objective/subjective recognition and %(objective.test.size)d for testing.",
-				"Training set size of positive/negative classifier was %(sentiment.train.size)d texts, testing set - %(sentiment.test.size)d",
-				"Classification efficiency: %(objective.test.perf).1f for objectiveness and %(sentiment.test.perf).1f for positiveness.",
-				"Words used mostly in objective texts: %(objective.top[0][0][0])s, %(objective.top[0][1][0])s, %(objective.top[0][2][0])s.",
-				"Those words are most common in subjective texts: %(objective.top[1][0][0])s, %(objective.top[1][1][0])s and %(objective.top[1][2][0])s.",
-				"Top words used in positive texts: %(sentiment.top[0][0][0])s, %(sentiment.top[0][1][0])s and %(sentiment.top[0][2][0])s.",
-				"Most unfavorable words were: %(sentiment.top[1][0][0])s, %(sentiment.top[1][1][0])s and %(sentiment.top[1][2][0])s."
-			]
-		}
-
+		let strings = __("report_strings")
 		let string = []
 		let report = JSON.parse(launch.report)
 		let chart = null
@@ -136,7 +111,7 @@ export default class Launches extends Component {
 		return (
 			<div className="card my-3 mx-2" key={index}>
 				<div className={"card-header " + (launch.type === "parser" ? "bg-success" : "bg-primary")}>
-					Launch #{launch.id}
+					{sprintf(__("launch_num"), launch.id)}
 				</div>
 
 				<div className="card-body">
@@ -152,7 +127,7 @@ export default class Launches extends Component {
 						return <p key={index} className="card-text mb-1">{string}</p>
 					})}
 
-					<Link to={"/report/" + launch.id} className="float-right">more...</Link>
+					<Link to={"/report/" + launch.id} className="float-right">{__("more")}</Link>
 				</div>
 			</div>
 		)
@@ -178,7 +153,7 @@ export default class Launches extends Component {
 					{page <= 1 ? "" : (
 						<li className="page-item">
 							<Link to={"/reports/" + (page - 1)} className="page-link">
-								prev
+								{__("prev")}
 							</Link>
 						</li>
 					)}
@@ -186,7 +161,7 @@ export default class Launches extends Component {
 					{(!launches.length || launches.length < limit) ? "" : (
 						<li className="page-item">
 							<Link to={"/reports/" + (page + 1)} className="page-link">
-								next
+								{__("next")}
 							</Link>
 						</li>
 					)}

@@ -5,7 +5,7 @@ function ftdate(timestamp) {
 	var minute = obj.getMinutes()
 	var second = obj.getSeconds()
 
-	return sprintf("%s %02d:%02d:%02d", fdate(timestamp), hour, minute, second)
+	return sprintf(__("date_time_format"), fdate(timestamp), hour, minute, second)
 }
 
 function fdate(timestamp) {
@@ -15,7 +15,7 @@ function fdate(timestamp) {
 	var month = obj.getMonth() + 1
 	var day = obj.getDate()
 
-	return sprintf("%04d-%02d-%02d", year, month, day)
+	return sprintf(__("date_format"), year, month, day)
 }
 
 export { fdate, ftdate }

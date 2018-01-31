@@ -20,7 +20,7 @@ function texts_chart(element, report) {
 		"type" : "bar",
 
 		"data" : { 
-			"labels" : [ "normal", "positive", "negative" ],
+			"labels" : [ __("normal"), __("positive"), __("negative") ],
 			"datasets" : [{
 				"data" : data,
 
@@ -42,7 +42,7 @@ function texts_chart(element, report) {
 
 		"options" : {
 			"title" : {
-				"text" : "Texts count",
+				"text" : __("texts_count"),
 				"display" : true
 			},
 
@@ -65,10 +65,10 @@ function texts2_chart(element, report) {
 	var chbar = new Chart(element.getContext("2d"), {
 		"type" : "pie",
 		"data" : { 
-			"labels" : [ "normal", "positive", "negative" ],
+			"labels" : [ __("normal"), __("positive"), __("negative") ],
 
 			"datasets" : [{
-				"label" : "count",
+				"label" : __("count"),
 				"data" : data,
 
 				"backgroundColor" : [
@@ -102,7 +102,7 @@ function stages_chart(element, report) {
 		"type" : "bar",
 
 		"data" : { 
-			"labels" : [ "prepare", "objective", "sentiment" ],
+			"labels" : [ __("prepare"), __("objective"), __("sentiment") ],
 			"datasets" : [{
 				"data" : data,
 
@@ -124,7 +124,7 @@ function stages_chart(element, report) {
 
 		"options" : {
 			"title" : {
-				"text" : "Time for each stage",
+				"text" : __("time_for_each_stage"),
 				"display" : true
 			},
 
@@ -135,7 +135,7 @@ function stages_chart(element, report) {
 			"tooltips" : {
 				"callbacks" : {
 					"label" : function(item, data) {
-						return sprintf("%.2fs", item.yLabel)
+						return sprintf(__("format_float_seconds"), item.yLabel)
 					}
 				}
 			}
@@ -155,7 +155,7 @@ function perf_chart(element, report) {
 		"type" : "bar",
 
 		"data" : { 
-			"labels" : [ "objective", "sentiment" ],
+			"labels" : [ __("objective"), __("sentiment") ],
 			"datasets" : [{
 				"data" : data,
 
@@ -175,7 +175,7 @@ function perf_chart(element, report) {
 
 		"options" : {
 			"title" : {
-				"text" : "Classification performance",
+				"text" : __("classification_performance"),
 				"display" : true
 			},
 
@@ -189,7 +189,7 @@ function perf_chart(element, report) {
 						var i = item.index
 						var j = item.datasetIndex
 						var data = data.datasets[j].data[i]
-						return sprintf("%d%%", data)
+						return sprintf(__("format_int_percent"), data)
 					}
 				}
 			},

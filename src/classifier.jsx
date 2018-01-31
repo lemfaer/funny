@@ -13,7 +13,7 @@ export default class Classifier extends Component {
 	}
 
 	componentDidMount() {
-		document.title = "Classifier"
+		document.title = __("classifier")
 	}
 
 	last(update) {
@@ -23,7 +23,7 @@ export default class Classifier extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/launch/classifier")
+		xhr.open("GET", "/api/launch/classifier/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -47,7 +47,7 @@ export default class Classifier extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/texts")
+		xhr.open("GET", "/api/texts/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -60,7 +60,7 @@ export default class Classifier extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't load texts", false)
+				salert(__("cant_load_texts"), false)
 			}
 		}
 
@@ -111,14 +111,14 @@ export default class Classifier extends Component {
 					type="button"
 					className="btn btn-light float-right my-3"
 					onClick={this.text.bind(this)}>
-						Add text
+						{__("add_text")}
 				</button>
 
 				<button
 					type="button"
 					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
 					onClick={this.classify.bind(this, running && last.id)}>
-						{ running ? "Watch" : "Start" }
+						{ running ? __("watch") : __("start") }
 						{ !running ? "" :
 							<Progress
 								ref="progress"
@@ -142,10 +142,10 @@ export default class Classifier extends Component {
 			<table className="table">
 				<thead>
 					<tr>
-						<th>#</th>
-						<th>Text</th>
-						<th>Class</th>
-						<th>Edit</th>
+						<th>{__("num")}</th>
+						<th>{__("text")}</th>
+						<th>{__("class")}</th>
+						<th>{__("edit")}</th>
 					</tr>
 				</thead>
 

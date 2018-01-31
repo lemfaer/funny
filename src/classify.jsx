@@ -83,7 +83,7 @@ export default class Classify extends Component {
 	start() {
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "/api/start/classifier")
+		xhr.open("POST", "/api/start/classifier/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -94,7 +94,7 @@ export default class Classify extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't start classifier", false)
+				salert(__("cant_start_classifier"), false)
 			}
 		}
 
@@ -131,7 +131,7 @@ export default class Classify extends Component {
 				{!this.state.lid
 					? <form id="classifier-form">
 						<div className="form-group">
-							<label htmlFor="classifier-kernel">Kernel type</label>
+							<label htmlFor="classifier-kernel">{__("kernel_type")}</label>
 							<select
 								ref="kernel"
 								id="classifier-kernel"
@@ -140,14 +140,14 @@ export default class Classify extends Component {
 								className="form-control"
 								required>
 
-								<option value="linear">linear</option>
-								<option value="rbf">rbf</option>
+								<option value="linear">{__("linear")}</option>
+								<option value="rbf">{__("rbf")}</option>
 							</select>
 							<div className="invalid-feedback"></div>
 						</div>
 
 						<div className="form-group">
-							<label htmlFor="classifier-test">Test set size</label>
+							<label htmlFor="classifier-test">{__("test_set_size")}</label>
 							<input
 								ref="test"
 								type="range"
@@ -178,7 +178,7 @@ export default class Classify extends Component {
 						</div>
 
 						<div className="form-group">
-							<label>Ngrams mode</label>
+							<label>{__("ngrams_mode")}</label>
 							<div className="form-check">
 								<label className="form-check-label">
 									<input
@@ -189,7 +189,7 @@ export default class Classify extends Component {
 										defaultChecked={this.state.unigram}
 										className="form-check-input"
 									/>
-									unigram
+									{__("unigram")}
 								</label>
 							</div>
 
@@ -203,7 +203,7 @@ export default class Classify extends Component {
 										defaultChecked={this.state.bigram}
 										className="form-check-input"
 									/>
-									bigram
+									{__("bigram")}
 								</label>
 							</div>
 
@@ -217,7 +217,7 @@ export default class Classify extends Component {
 										defaultChecked={this.state.trigram}
 										className="form-check-input"
 									/>
-									trigram
+									{__("trigram")}
 								</label>
 							</div>
 
@@ -231,16 +231,16 @@ export default class Classify extends Component {
 										defaultChecked={this.state.chars4}
 										className="form-check-input"
 									/>
-									chars4
+									{__("chars4")}
 								</label>
 							</div>
 						</div>
 
 						<details>
-							<summary>Advanced</summary>
+							<summary>{__("advanced")}</summary>
 
 							<div className="form-group">
-								<label htmlFor="classifier-c">C</label>
+								<label htmlFor="classifier-c">{__("c")}</label>
 								<input
 									ref="c"
 									type="text"
@@ -254,7 +254,7 @@ export default class Classify extends Component {
 							</div>
 
 							<div className="form-group">
-								<label htmlFor="classifier-sigma">Sigma (for rbf kernel)</label>
+								<label htmlFor="classifier-sigma">{__("sigma")}</label>
 								<input
 									ref="sigma"
 									type="text"
@@ -268,7 +268,7 @@ export default class Classify extends Component {
 							</div>
 
 							<div className="form-group">
-								<label htmlFor="classifier-sigma">Tolerance</label>
+								<label htmlFor="classifier-sigma">{__("tolerance")}</label>
 								<input
 									ref="tol"
 									type="text"
@@ -294,9 +294,9 @@ export default class Classify extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
+				<button type="button" className="btn btn-light" onClick={this.close.bind(this)}>{__("close")}</button>
 				{this.state.lid ? "" :
-					<button type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>Start</button>}
+					<button type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>{__("start")}</button>}
 			</div>
 			</div>
 		)
@@ -306,11 +306,11 @@ export default class Classify extends Component {
 		let title = null
 
 		if (!this.state.lid) {
-			title = "Start classifier"
+			title = __("start_classifier")
 		} else switch (this.state.stage) {
-			case this.stages[0]: default: title = "Preparing (1 / 3)"; break
-			case this.stages[1]: title = "Objective classifier (2 / 3)"; break
-			case this.stages[2]: title = "Sentiment classifier (3 / 3)"; break
+			case this.stages[0]: default: title = __("preparing_stage"); break
+			case this.stages[1]: title = __("objective_stage"); break
+			case this.stages[2]: title = __("sentiment_stage"); break
 		}
 
 		return <Modal ref="modal" title={title} content={this.form.bind(this)()} close={this.close.bind(this)} />

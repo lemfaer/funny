@@ -21,7 +21,7 @@ export default class Report extends Component {
 	}
 
 	componentDidMount() {
-		document.title = "Report #" + this.id()
+		document.title = sprintf(__("report_num"), this.id())
 	}
 
 	id() {
@@ -35,7 +35,7 @@ export default class Report extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/launch/" + id)
+		xhr.open("GET", sprintf("/api/launch/%d/", id))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -58,7 +58,7 @@ export default class Report extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't load report", false)
+				salert(__("cant_load_report"), false)
 			}
 		}
 
@@ -87,18 +87,18 @@ export default class Report extends Component {
 			<div className="col-lg-10 col-12 mx-auto">
 				<div className="report card">
 					<h4 className="card-header font-weight-normal bg-success">
-						Launch #{this.id()}
+						{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
 						<div className="col-8">
 							<div>
-								<h4 className="font-weight-normal">General:</h4>
+								<h4 className="font-weight-normal">{__("general_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Launched</dt>
+									<dt className="col-6">{__("launched")}</dt>
 									<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-									<dt className="col-6">Progress</dt>
+									<dt className="col-6">{__("progress")}</dt>
 									<dd className="col-6">
 										<Progress
 											ref="progress"
@@ -120,18 +120,18 @@ export default class Report extends Component {
 			<div className="col-lg-10 col-12 mx-auto">
 				<div className="report card">
 					<h4 className="card-header font-weight-normal bg-primary">
-						Launch #{this.id()}
+						{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
 						<div className="col-8">
 							<div>
-								<h4 className="font-weight-normal">General:</h4>
+								<h4 className="font-weight-normal">{__("general_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Launched</dt>
+									<dt className="col-6">{__("launched")}</dt>
 									<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-									<dt className="col-6">Progress</dt>
+									<dt className="col-6">{__("progress")}</dt>
 									<dd className="col-6">
 										<Progress
 											ref="progress"
@@ -153,7 +153,7 @@ export default class Report extends Component {
 			<div className="col-lg-10 col-12 mx-auto">
 				<div className="report card">
 					<h4 className="card-header font-weight-normal bg-success">
-						Launch #{this.id()}
+						{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
@@ -163,44 +163,44 @@ export default class Report extends Component {
 
 						<div className="col-8">
 							<div>
-								<h4 className="font-weight-normal">General:</h4>
+								<h4 className="font-weight-normal">{__("general_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Total pages to parse</dt>
+									<dt className="col-6">{__("total_pages_to_parse")}</dt>
 									<dd className="col-6">{this.state.report.links.length}</dd>
 
-									<dt className="col-6">Minimum text length</dt>
+									<dt className="col-6">{__("minimum_text_length")}</dt>
 									<dd className="col-6">{this.state.report["minimum_text_length"]}</dd>
 
-									<dt className="col-6">Launched</dt>
+									<dt className="col-6">{__("launched")}</dt>
 									<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-									<dt className="col-6">Ended</dt>
+									<dt className="col-6">{__("ended")}</dt>
 									<dd className="col-6">{ftdate(this.state.updated)}</dd>
 								</dl>
 							</div>
 
 							<div>
-								<h4 className="font-weight-normal">Total:</h4>
+								<h4 className="font-weight-normal">{__("total_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Texts</dt>
+									<dt className="col-6">{__("texts")}</dt>
 									<dd className="col-6">{this.state.report["total_parsed"]}</dd>
 
-									<dt className="col-6">Estimated</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report["original_estimate"])}</dd>
+									<dt className="col-6">{__("estimated")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report["original_estimate"])}</dd>
 
-									<dt className="col-6">Time</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report["total_time"])}</dd>
+									<dt className="col-6">{__("time")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report["total_time"])}</dd>
 								</dl>
 							</div>
 
 							<div>
-								<h4 className="font-weight-normal">Average:</h4>
+								<h4 className="font-weight-normal">{__("average_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Texts per page</dt>
-									<dd className="col-6">{sprintf("%.2f", this.state.report["average_parsed"])}</dd>
+									<dt className="col-6">{__("texts_per_page")}</dt>
+									<dd className="col-6">{sprintf(__("format_float"), this.state.report["average_parsed"])}</dd>
 
-									<dt className="col-6">Time</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report["average_time"])}</dd>
+									<dt className="col-6">{__("time")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report["average_time"])}</dd>
 								</dl>
 							</div>
 						</div>
@@ -216,7 +216,13 @@ export default class Report extends Component {
 
 		for (let key in ngrams) {
 			if (tngrams & key) {
-				rngrams.push(ngrams[key])
+				// because this thing gets compiled
+				switch (ngrams[key]) {
+					case "unigram": rngrams.push(__("unigram")); break
+					case "bigram": rngrams.push(__("bigram")); break
+					case "trigram": rngrams.push(__("trigram")); break
+					case "chars4": rngrams.push(__("chars4")); break
+				}
 			}
 		}
 
@@ -224,7 +230,7 @@ export default class Report extends Component {
 			<div className="col-lg-10 col-12 mx-auto">
 				<div className="report card">
 					<h4 className="card-header font-weight-normal bg-primary">
-						Launch #{this.id()}
+						{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
@@ -235,8 +241,8 @@ export default class Report extends Component {
 								height="1"
 								data-type="data"
 								data-index="0"
-								data-label1="objective"
-								data-label2="subjective">
+								data-label1={__("objective")}
+								data-label2={__("subjective")}>
 							</canvas>
 
 							<canvas ref="chart2"
@@ -244,86 +250,86 @@ export default class Report extends Component {
 								height="1"
 								data-type="data"
 								data-index="1"
-								data-label1="positive"
-								data-label2="negative">
+								data-label1={__("positive")}
+								data-label2={__("negative")}>
 							</canvas>
 						</div>
 
 						<div className="col-8">
 							<div>
-								<h4 className="font-weight-normal">General:</h4>
+								<h4 className="font-weight-normal">{__("general_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Kernel</dt>
-									<dd className="col-6">{this.state.report["kernel"]}</dd>
+									<dt className="col-6">{__("kernel")}</dt>
+									<dd className="col-6">{(this.state.report["kernel"] === "linear" ? __("linear") : __("rbf"))}</dd>
 
-									<dt className="col-6">C / sigma / tol / iter / pass</dt>
-									<dd className="col-6">{sprintf("%(c).2f / %(sigma).2f / %(tol)f / %(liter)d / %(lpass)d", this.state.report)}</dd>
+									<dt className="col-6">{__("c_sigma_tol_iter_pass")}</dt>
+									<dd className="col-6">{sprintf(__("c_sigma_tol_iter_pass_val"), this.state.report)}</dd>
 
-									<dt className="col-6">Ngrams</dt>
+									<dt className="col-6">{__("ngrams")}</dt>
 									<dd className="col-6">{rngrams.join(", ")}</dd>
 
-									<dt className="col-6">Launched</dt>
+									<dt className="col-6">{__("launched")}</dt>
 									<dd className="col-6">{ftdate(this.state.created)}</dd>
 
-									<dt className="col-6">Ended</dt>
+									<dt className="col-6">{__("ended")}</dt>
 									<dd className="col-6">{ftdate(this.state.updated)}</dd>
 								</dl>
 							</div>
 
 							<div>
-								<h4 className="font-weight-normal">Preparations:</h4>
+								<h4 className="font-weight-normal">{__("preparations_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Texts</dt>
+									<dt className="col-6">{__("texts")}</dt>
 									<dd className="col-6">{this.state.report.prepare.texts}</dd>
 
-									<dt className="col-6">Words</dt>
+									<dt className="col-6">{__("words")}</dt>
 									<dd className="col-6">{this.state.report.prepare.total_words}</dd>
 
-									<dt className="col-6">Estimated</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.prepare.estimation)}</dd>
+									<dt className="col-6">{__("estimated")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.prepare.estimation)}</dd>
 
-									<dt className="col-6">Time</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.prepare.time)}</dd>
+									<dt className="col-6">{__("time")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.prepare.time)}</dd>
 								</dl>
 							</div>
 
 							<div>
-								<h4 className="font-weight-normal">Objectiveness classifier:</h4>
+								<h4 className="font-weight-normal">{__("objectiveness_classifier_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Training set size</dt>
+									<dt className="col-6">{__("training_set_size")}</dt>
 									<dd className="col-6">{this.state.report.objective.train.size}</dd>
 
-									<dt className="col-6">Testing set size</dt>
+									<dt className="col-6">{__("testing_set_size")}</dt>
 									<dd className="col-6">{this.state.report.objective.test.size}</dd>
 
-									<dt className="col-6">Performance</dt>
-									<dd className="col-6">{sprintf("%.2f%%", this.state.report.objective.test.perf * 100)}</dd>
+									<dt className="col-6">{__("performance")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_percent"), this.state.report.objective.test.perf * 100)}</dd>
 
-									<dt className="col-6">Estimated</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.objective.estimation)}</dd>
+									<dt className="col-6">{__("estimated")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.objective.estimation)}</dd>
 
-									<dt className="col-6">Time</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.objective.train.time)}</dd>
+									<dt className="col-6">{__("time")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.objective.train.time)}</dd>
 								</dl>
 							</div>
 
 							<div>
-								<h4 className="font-weight-normal">Positiveness classifier:</h4>
+								<h4 className="font-weight-normal">{__("positiveness_classifier_col")}</h4>
 								<dl className="row">
-									<dt className="col-6">Training set size</dt>
+									<dt className="col-6">{__("training_set_size")}</dt>
 									<dd className="col-6">{this.state.report.sentiment.train.size}</dd>
 
-									<dt className="col-6">Testing set size</dt>
+									<dt className="col-6">{__("testing_set_size")}</dt>
 									<dd className="col-6">{this.state.report.sentiment.test.size}</dd>
 
-									<dt className="col-6">Performance</dt>
-									<dd className="col-6">{sprintf("%.2f%%", this.state.report.sentiment.test.perf * 100)}</dd>
+									<dt className="col-6">{__("performance")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_percent"), this.state.report.sentiment.test.perf * 100)}</dd>
 
-									<dt className="col-6">Estimated</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.sentiment.estimation)}</dd>
+									<dt className="col-6">{__("estimated")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.sentiment.estimation)}</dd>
 
-									<dt className="col-6">Time</dt>
-									<dd className="col-6">{sprintf("%.2fs", this.state.report.sentiment.train.time)}</dd>
+									<dt className="col-6">{__("time")}</dt>
+									<dd className="col-6">{sprintf(__("format_float_seconds"), this.state.report.sentiment.train.time)}</dd>
 								</dl>
 							</div>
 						</div>
@@ -339,10 +345,10 @@ export default class Report extends Component {
 				<table className="table">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>Link</th>
-							<th className="text-center">Texts</th>
-							<th className="text-center">Loaded / Parsed</th>
+							<th>{__("num")}</th>
+							<th>{__("link")}</th>
+							<th className="text-center">{__("texts")}</th>
+							<th className="text-center">{__("loaded_parsed")}</th>
 						</tr>
 					</thead>
 
@@ -358,7 +364,7 @@ export default class Report extends Component {
 									</td>
 									<td className="text-center">{stats.count.all}</td>
 									<td className="text-center">
-										{sprintf("%.2fs", stats.loaded)} / {sprintf("%.2fs", stats.parsed)}
+										{sprintf(__("format_float_seconds"), stats.loaded)} / {sprintf(__("format_float_seconds"), stats.parsed)}
 									</td>
 								</tr>
 							)
@@ -376,7 +382,7 @@ export default class Report extends Component {
 		return (
 			<div className="col-lg-10 col-12 mt-3 mx-auto">
 				<ul className="pagination justify-content-center">
-					{[ "Positive", "Negative", "Objective", "Subjective" ].map((name, index) => {
+					{[ __("positive_t"), __("negative_t"), __("objective_t"), __("subjective_t") ].map((name, index) => {
 						return (
 							<li className="page-item">
 								<button
@@ -393,9 +399,9 @@ export default class Report extends Component {
 				<table className="table">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>Word</th>
-							<th>Delta TF-IDF</th>
+							<th>{__("num")}</th>
+							<th>{__("word")}</th>
+							<th>{__("delta_tf_idf")}</th>
 						</tr>
 					</thead>
 
@@ -405,7 +411,7 @@ export default class Report extends Component {
 								<tr key={index}>
 									<td>{index + 1}</td>
 									<td>{word[0]}</td>
-									<td>{sprintf("%.2f", word[1])}</td>
+									<td>{sprintf(__("format_float"), word[1])}</td>
 								</tr>
 							)
 						})}

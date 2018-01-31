@@ -13,7 +13,7 @@ export default class Parser extends Component {
 	}
 
 	componentDidMount() {
-		document.title = "Parser"
+		document.title = __("parser")
 	}
 
 	last(update) {
@@ -23,7 +23,7 @@ export default class Parser extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/launch/parser")
+		xhr.open("GET", "/api/launch/parser/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -47,7 +47,7 @@ export default class Parser extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("GET", "/api/pages")
+		xhr.open("GET", "/api/pages/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -60,7 +60,7 @@ export default class Parser extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't load pages", false)
+				salert(__("cant_load_pages"), false)
 			}
 		}
 
@@ -93,14 +93,14 @@ export default class Parser extends Component {
 					type="button"
 					className="btn btn-light float-right my-3"
 					onClick={this.page.bind(this)}>
-						Add page
+						{__("add_page")}
 				</button>
 
 				<button
 					type="button"
 					className={"btn btn-warning float-right m-3 " + (running ? "bg-progress" : "")}
 					onClick={this.parse.bind(this, running && last.id)}>
-						{ running ? "Watch" : "Start" }
+						{ running ? __("watch") : __("start") }
 						{ !running ? "" :
 							<Progress
 								ref="progress"
@@ -124,9 +124,9 @@ export default class Parser extends Component {
 			<table className="table">
 				<thead>
 					<tr>
-						<th>#</th>
-						<th>Link</th>
-						<th>Edit</th>
+						<th>{__("num")}</th>
+						<th>{__("link")}</th>
+						<th>{__("edit")}</th>
 					</tr>
 				</thead>
 

@@ -33,7 +33,7 @@ export default class Parse extends Component {
 	start() {
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "/api/start/parser")
+		xhr.open("POST", "/api/start/parser/")
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -44,7 +44,7 @@ export default class Parse extends Component {
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't start parser", false)
+				salert(__("cant_start_parser"), false)
 			}
 		}
 
@@ -62,7 +62,7 @@ export default class Parse extends Component {
 				{!this.state.lid
 					? <form id="parser-form">
 						<div className="form-group">
-							<label htmlFor="parser-minlen">Minimum text length</label>
+							<label htmlFor="parser-minlen">{__("minimum_text_length")}</label>
 							<input
 								type="number"
 								id="parser-minlen"
@@ -87,16 +87,16 @@ export default class Parse extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
+				<button type="button" className="btn btn-light" onClick={this.close.bind(this)}>{__("close")}</button>
 				{this.state.lid ? "" :
-					<button type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>Start</button>}
+					<button type="submit" className="btn btn-warning" onClick={this.start.bind(this)}>{__("start")}</button>}
 			</div>
 			</div>
 		)
 	}
 
 	render() {
-		let title = (!this.state.lid ? "Start parser" : "Parsing")
+		let title = (!this.state.lid ? __("start_parser") : __("parsing"))
 		return <Modal ref="modal" title={title} content={this.form.bind(this)()} close={this.closed.bind(this)} />
 	}
 

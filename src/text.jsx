@@ -49,11 +49,11 @@ export default class Text extends Component {
 
 	error(key, value) {
 		if (key === "text" && !value) {
-			return "Text cannot be empty"
+			return __("text_cannot_be_empty")
 		}
 
 		if (key === "class" && [ "positive", "negative", "normal" ].indexOf(value) === -1) {
-			return "Wrong class value"
+			return __("wrong_class_value")
 		}
 	}
 
@@ -67,22 +67,22 @@ export default class Text extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "/api/text/" + (this.state.id || ""))
+		xhr.open("POST", "/api/text/" + (this.state.id + "/" || ""))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
 			}
 
 			if (xhr.status === 200 && !this.state.id) {
-				salert("Text created", true)
+				salert(__("text_created"), true)
 			}
 
 			if (xhr.status === 200 && this.state.id) {
-				salert(sprintf("Text #%d updated", this.state.id), true)
+				salert(sprintf(__("text_num_updated"), this.state.id), true)
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't save text", false)
+				salert(__("cant_save_text"), false)
 			}
 		}
 
@@ -104,18 +104,18 @@ export default class Text extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("DELETE", "/api/text/" + this.state.id)
+		xhr.open("DELETE", sprintf("/api/text/%d/", this.state.id))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
 			}
 
 			if (xhr.status === 200) {
-				salert(sprintf("Text #%d deleted", this.state.id), true)
+				salert(sprintf(__("text_num_deleted"), this.state.id), true)
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't delete text", false)
+				salert(__("cant_delete_text"), false)
 			}
 		}
 
@@ -129,7 +129,7 @@ export default class Text extends Component {
 			<div className="modal-body">
 				<form id="text-form">
 					<div className="form-group">
-						<label htmlFor="text-text">Text</label>
+						<label htmlFor="text-text">{__("text")}</label>
 						<textarea
 							ref="text"
 							id="text-text"
@@ -144,7 +144,7 @@ export default class Text extends Component {
 					</div>
 
 					<div className="form-group">
-						<label htmlFor="text-class">Class</label>
+						<label htmlFor="text-class">{__("class")}</label>
 						<select
 							ref="class"
 							id="text-class"
@@ -154,9 +154,9 @@ export default class Text extends Component {
 							onChange={this.update.bind(this)}
 							required>
 
-							<option value="positive">positive</option>
-							<option value="negative">negative</option>
-							<option value="normal">normal</option>
+							<option value="positive">{__("positive")}</option>
+							<option value="negative">{__("negative")}</option>
+							<option value="normal">{__("normal")}</option>
 						</select>
 						<div className="invalid-feedback"></div>
 					</div>
@@ -172,7 +172,7 @@ export default class Text extends Component {
 								className="form-check-input"
 								onChange={this.update.bind(this)}
 							/>
-							Persist
+							{__("persist")}
 							<div className="invalid-feedback"></div>
 						</label>
 					</div>
@@ -180,10 +180,10 @@ export default class Text extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button form="text-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
+				<button form="text-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>{__("close")}</button>
 				{!this.state.id ? "" :
-					<button form="text-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>Delete</button>}
-				<button form="text-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>Save</button>
+					<button form="text-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>{__("delete")}</button>}
+				<button form="text-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>{__("save")}</button>
 			</div>
 			</div>
 		)
@@ -192,7 +192,7 @@ export default class Text extends Component {
 	render() {
 		return (
 			<Modal ref="modal"
-				title={!this.state.id ? "Enter text to classify" : `Update text ${this.state.id}`}
+				title={!this.state.id ? __("enter_text_to_classify") : sprintf(__("update_text_num"), this.state.id)}
 				content={this.form.bind(this)()}
 			/>
 		)

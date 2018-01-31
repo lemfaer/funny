@@ -42,7 +42,7 @@ export default class Page extends Component {
 
 	error(key, value) {
 		if (!value) {
-			return "Link cannot be empty"
+			return __("link_cannot_be_empty")
 		}
 
 		let matched = false
@@ -56,7 +56,7 @@ export default class Page extends Component {
 		}
 
 		if (!matched) {
-			return "Unsupported link value"
+			return __("unsupported_link_value")
 		}
 	}
 
@@ -96,22 +96,22 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "/api/page/" + (this.state.id || ""))
+		xhr.open("POST", "/api/page/" + (this.state.id + "/" || ""))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
 			}
 
 			if (xhr.status === 200 && !this.state.id) {
-				salert("Page created", true)
+				salert(__("page_created"), true)
 			}
 
 			if (xhr.status === 200 && this.state.id) {
-				salert(sprintf("Page #%d updated", this.state.id), true)
+				salert(sprintf(__("page_num_updated"), this.state.id), true)
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't save page", false)
+				salert(__("cant_save_page"), false)
 			}
 		}
 
@@ -130,18 +130,18 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("DELETE", "/api/page/" + this.state.id)
+		xhr.open("DELETE", sprintf("/api/page/%d/", this.state.id))
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
 			}
 
 			if (xhr.status === 200) {
-				salert(sprintf("Page #%d deleted", this.state.id), true)
+				salert(sprintf(__("page_num_deleted"), this.state.id), true)
 			}
 
 			if (xhr.status !== 200) {
-				salert("Can't delete page", false)
+				salert(__("cant_delete_page"), false)
 			}
 		}
 
@@ -172,10 +172,10 @@ export default class Page extends Component {
 			</div>
 
 			<div className="modal-footer">
-				<button form="page-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>Close</button>
+				<button form="page-form" type="button" className="btn btn-light" onClick={this.close.bind(this)}>{__("close")}</button>
 				{!this.state.id ? "" :
-					<button form="page-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>Delete</button>}
-				<button form="page-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>Save</button>
+					<button form="page-form" type="button" className="btn btn-danger" onClick={this.delete.bind(this)}>{__("delete")}</button>}
+				<button form="page-form" type="submit" className="btn btn-warning" onClick={this.save.bind(this)}>{__("save")}</button>
 			</div>
 			</div>
 		)
@@ -184,7 +184,7 @@ export default class Page extends Component {
 	render() {
 		return (
 			<Modal ref="modal"
-				title={!this.state.id ? "Enter link to parse" : `Update link ${this.state.id}`}
+				title={!this.state.id ? __("enter_link_to_parse") : sprintf(__("update_link_num"), this.state.id)}
 				content={this.form.bind(this)()}
 			/>
 		)
