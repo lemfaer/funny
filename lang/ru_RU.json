@@ -35,7 +35,7 @@
 	"delete" : "Удалить",
 	"c" : "C",
 	"sigma" : "Sigma (для rbf ядра)",
-	"persist" : "Сохранить",
+	"persist" : "Сохранять",
 	"tolerance" : "Допустимое отклонение",
 	"advanced" : "Дополнительные",
 	"kernel_type" : "Тип ядра",

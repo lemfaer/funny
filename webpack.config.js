@@ -1,6 +1,11 @@
 var webpack = require("webpack")
 webpack.I18nPlugin = require("i18n-webpack-plugin")
-var languages = { "en" : require("./lang/en_US.json"), "ru" : require("./lang/ru_RU.json") }
+
+var languages = {
+	"en" : require("./lang/en_US.json"),
+	"ru" : require("./lang/ru_RU.json"),
+	"uk" : require("./lang/uk_UA.json")
+}
 
 module.exports = Object.keys(languages).map(function(key) {
 

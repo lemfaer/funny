@@ -138,6 +138,12 @@ export default class Classifier extends Component {
 	}
 
 	table() {
+		let classes = {
+			"normal" : __("normal"),
+			"positive" : __("positive"),
+			"negative" : __("negative")
+		}
+
 		return (
 			<table className="table">
 				<thead>
@@ -156,7 +162,7 @@ export default class Classifier extends Component {
 								<td>{text.id}</td>
 								<td>{text.text.substr(0, 200) +
 									(text.text.length > 200 ? "..." : "")}</td>
-								<td>{text.class}</td>
+								<td>{classes[text.class]}</td>
 								<td>
 									<span
 										className="octicon octicon-pencil"
