@@ -4,7 +4,9 @@ CREATE TABLE weights (
 	launch_id   INTEGER           NOT NULL,
 	b           FLOAT             NOT NULL,
 	alpha       JSON              NOT NULL,
-	data        JSON              NOT NULL
+	data        JSON              NOT NULL,
+	created     TIMESTAMP         NOT NULL DEFAULT now(),
+	updated     TIMESTAMP         NOT NULL DEFAULT now() ON UPDATE now()
 )
 
 ENGINE = MyISAM;
