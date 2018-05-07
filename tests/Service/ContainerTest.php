@@ -135,8 +135,9 @@ class ContainerTest extends TestCase {
 			];
 		}
 
-		$this->assertSame($expected_exception, $exception);
-		if (is_object($result)) {
+		if (isset($exception)) {
+			$this->assertSame($expected_exception, $exception);
+		} elseif (is_object($result)) {
 			$this->assertInstanceOf($expected_result, $result);
 		} else {
 			$this->assertSame($expected_result, $result);
@@ -240,8 +241,8 @@ class ContainerTest extends TestCase {
 			];
 		}
 
-		$this->assertSame($expected_result, $result);
-		$this->assertSame($expected_exception, $exception);
+		$this->assertSame($expected_result, $result ?? null);
+		$this->assertSame($expected_exception, $exception ?? null);
 	}
 
 	function provider_call() {

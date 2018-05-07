@@ -7,7 +7,17 @@ use Funny\Model\Page as Model;
 
 class Page extends Controller {
 
-	var $fields = [ "id", "link", "normal", "positive", "negative", "rremove", "created", "updated" ];
+	var $fields = [
+		"id",
+		"link",
+		"normal",
+		"positive",
+		"negative",
+		"rremove",
+		"recurrence",
+		"created",
+		"updated"
+	];
 
 	/** GET /pages */
 	function all(Model $page) {

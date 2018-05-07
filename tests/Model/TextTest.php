@@ -163,7 +163,7 @@ class TextTest extends TestCase {
 
 		$db = $this->getMockBuilder(Connection::class)
 			->disableOriginalConstructor()
-			->setMethods([ "prepare" ])
+			->setMethods([ "prepare", "lastInsertId" ])
 			->getMock();
 
 		$statm = $this->getMockBuilder(PDOStatement::class)

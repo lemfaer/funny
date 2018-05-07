@@ -4,7 +4,7 @@ return [
 
 	"app" => [
 		"domain" => $_SERVER["HTTP_HOST"],
-		"python" => "python",
+		"python" => "python3",
 		"root" => __DIR__,
 		"src" => __DIR__ . "/src",
 		"tests" => __DIR__ . "/tests",
@@ -15,8 +15,8 @@ return [
 	"db" => [
 		"host" => "127.0.0.1",
 		"base" => "funny",
-		"user" => "root",
-		"pass" => "",
+		"user" => "aroot",
+		"pass" => "aroot",
 		"options" => [
 			\PDO::MYSQL_ATTR_INIT_COMMAND => "set names utf8",
 			\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,

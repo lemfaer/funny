@@ -60,6 +60,10 @@ class Text extends Model {
 
 		$statm = $this->db->prepare($query);
 		$statm->execute($binds);
+
+		if (empty($this->id)) {
+			$this->id = $this->db->lastInsertId();
+		}
 	}
 
 	/**

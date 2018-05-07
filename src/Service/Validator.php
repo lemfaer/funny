@@ -38,6 +38,10 @@ class Validator {
 		return is_null($value) || @preg_match($value, "") !== FALSE;
 	}
 
+	function recurrence($value) {
+		return is_null($value) || in_array($value, [ "weekly", "bi-weekly", "monthly" ]);
+	}
+
 	function text($value) {
 		return is_string($value);
 	}

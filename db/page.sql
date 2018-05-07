@@ -5,6 +5,7 @@ CREATE TABLE page (
 	positive    VARCHAR(255)      NULL,
 	negative    VARCHAR(255)      NULL,
 	rremove     VARCHAR(255)      NULL,
+	recurrence  VARCHAR(255)      NULL,
 	created     TIMESTAMP         NOT NULL DEFAULT now(),
 	updated     TIMESTAMP         NOT NULL DEFAULT now() ON UPDATE now()
 )

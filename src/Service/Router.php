@@ -21,7 +21,7 @@ class Router extends ArrayObject {
 	function dispatch($method, $url) {
 		foreach ($this as list($allowed, $pattern, $handler)) {
 			if (preg_match($pattern, $url, $args) && !strcasecmp($method, $allowed)) {
-				if (count($handler) === 2) {
+				if (is_array($handler)) {
 					$handler = [ $this->container->get($handler[0]), $handler[1] ];
 				}
 

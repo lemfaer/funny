@@ -48,7 +48,7 @@ class PageTest extends TestCase {
 
 		$result = $page->all();
 		$result = array_shift($result);
-		$result = $result->get([ "id", "link", "normal", "positive", "negative", "rremove" ]);
+		$result = $result->get([ "id", "link", "normal", "positive", "negative", "rremove", "recurrence" ]);
 
 		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
 		$this->assertSame($result, $expected_result);
@@ -63,7 +63,8 @@ class PageTest extends TestCase {
 					"normal" => null,
 					"positive" => null,
 					"negative" => null,
-					"rremove" => null
+					"rremove" => null,
+					"recurrence" => null
 				]],
 				"query" => "SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM page",
 				"result" => [
@@ -72,7 +73,8 @@ class PageTest extends TestCase {
 					"normal" => null,
 					"positive" => null,
 					"negative" => null,
-					"rremove" => null
+					"rremove" => null,
+					"recurrence" => null
 				]
 			]
 		];
@@ -123,7 +125,7 @@ class PageTest extends TestCase {
 		$page->db = $db;
 		$page->load($data["id"]);
 		$result = $page->get([ "id", "link", "normal", "positive",
-			"negative", "rremove", "created", "updated" ]);
+			"negative", "rremove", "recurrence", "created", "updated" ]);
 
 		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
 		$this->assertSame($result, $expected_result);
@@ -139,6 +141,7 @@ class PageTest extends TestCase {
 					"positive" => null,
 					"negative" => null,
 					"rremove" => null,
+					"recurrence" => null,
 					"created" => 0,
 					"updated" => 0
 				],
@@ -152,6 +155,7 @@ class PageTest extends TestCase {
 					"positive" => null,
 					"negative" => null,
 					"rremove" => null,
+					"recurrence" => null,
 					"created" => 0,
 					"updated" => 0
 				]
@@ -172,7 +176,7 @@ class PageTest extends TestCase {
 
 		$db = $this->getMockBuilder(Connection::class)
 			->disableOriginalConstructor()
-			->setMethods([ "prepare" ])
+			->setMethods([ "prepare", "lastInsertId" ])
 			->getMock();
 
 		$statm = $this->getMockBuilder(PDOStatement::class)
@@ -210,27 +214,29 @@ class PageTest extends TestCase {
 		return [
 			"insert" => [
 				"data" => [
-					"link" => "http://example.com",
+					"link" => "'http://example.com'",
 					"normal" => "NULL",
 					"positive" => "NULL",
 					"negative" => "NULL",
-					"rremove" => "NULL"
+					"rremove" => "NULL",
+					"recurrence" => "NULL"
 				],
 
-				"query" => "INSERT INTO page SET link=http://example.com,normal=NULL,positive=NULL,negative=NULL,rremove=NULL"
+				"query" => "INSERT INTO page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,rremove=NULL,recurrence=NULL"
 			],
 
 			"update" => [
 				"data" => [
 					"id" => 42,
-					"link" => "http://example.com",
+					"link" => "'http://example.com'",
 					"normal" => "NULL",
 					"positive" => "NULL",
 					"negative" => "NULL",
-					"rremove" => "NULL"
+					"rremove" => "NULL",
+					"recurrence" => "NULL"
 				],
 
-				"query" => "UPDATE page SET link=http://example.com,normal=NULL,positive=NULL,negative=NULL,rremove=NULL WHERE id = 42"
+				"query" => "UPDATE page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,rremove=NULL,recurrence=NULL WHERE id = 42"
 			]
 		];
 	}
