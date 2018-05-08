@@ -7,14 +7,25 @@ export default class Page extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { "id" : 0, "link" : "", "timer" : null }
+		this.state = {
+			"id" : 0,
+			"link" : "",
+			"recurrence" : null,
+			"timer" : null
+		}
 	}
 
-	open(id, link) {
+	open(id, link, recurrence) {
 		id = +id || 0
 		link = link || ""
+		recurrence = recurrence || null
+
 		this.refs.modal.open(() => {
-			this.setState({ "id" : id, "link" : link })
+			this.setState({
+				"id" : id,
+				"link" : link,
+				"recurrence" : recurrence
+			})
 		})
 	}
 
@@ -28,6 +39,10 @@ export default class Page extends Component {
 		let timer = setTimeout(this.validate.bind(this, event), time)
 		this.setState({ "link" : event.target.value, "timer" : timer })
 		event.persist()
+	}
+
+	uprecur(event) {
+		this.setState({ "recurrence" : event.target.value })
 	}
 
 	validate(event) {
@@ -60,7 +75,7 @@ export default class Page extends Component {
 		}
 	}
 
-	data(link) {
+	data(link, recurrence) {
 		let obj = {}
 
 		obj.link = link
@@ -69,6 +84,12 @@ export default class Page extends Component {
 
 		if (!/^https?:\/\//i.test(obj.link)) {
 			obj.link = "http://" + obj.link
+		}
+
+		if (recurrence !== "none") {
+			obj.recurrence = recurrence
+		} else {
+			obj.recurrence = null
 		}
 
 		for (let name in pages) {
@@ -96,7 +117,7 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("POST", "/api/page/" + (this.state.id + "/" || ""))
+		xhr.open("POST", `/api/page/${this.state.id}/`)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -115,7 +136,7 @@ export default class Page extends Component {
 			}
 		}
 
-		let page = this.data(this.state.link)
+		let page = this.data(this.state.link, this.state.recurrence)
 		let json = JSON.stringify(page)
 
 		xhr.setRequestHeader("Content-Type", "application/json")
@@ -130,7 +151,7 @@ export default class Page extends Component {
 
 		let xhr = new XMLHttpRequest()
 
-		xhr.open("DELETE", sprintf("/api/page/%d/", this.state.id))
+		xhr.open("DELETE", `/api/page/${this.state.id}/`)
 		xhr.onload = () => {
 			if (xhr.readyState !== 4) {
 				return
@@ -155,7 +176,9 @@ export default class Page extends Component {
 			<div className="modal-body">
 				<form id="page-form">
 					<div className="form-group">
+						<label htmlFor="page-link">{__("link")}</label>
 						<input
+							ref="link"
 							type="text"
 							id="page-link"
 							name="link"
@@ -166,6 +189,24 @@ export default class Page extends Component {
 							onReset={this.validate.bind(this)}
 							required
 							/>
+						<div className="invalid-feedback"></div>
+					</div>
+					<div className="form-group">
+						<label htmlFor="page-recurrence">{__("follow")}</label>
+						<select
+							ref="recurrence"
+							id="page-recurrence"
+							name="recurrence"
+							value={this.state.recurrence}
+							onChange={this.uprecur.bind(this)}
+							className="form-control"
+							required>
+
+							<option value="none">{__("none")}</option>
+							<option value="weekly">{__("weekly")}</option>
+							<option value="bi-weekly">{__("bi-weekly")}</option>
+							<option value="monthly">{__("monthly")}</option>
+						</select>
 						<div className="invalid-feedback"></div>
 					</div>
 				</form>

@@ -72,11 +72,12 @@ export default class Parser extends Component {
 		for (let page of this.pages()) {
 			if (page.id == id) {
 				var link = page.link
+				var recurrence = page.recurrence
 				break
 			}
 		}
 
-		this.refs.page.open(id, link)
+		this.refs.page.open(id, link, recurrence)
 	}
 
 	parse(id) {
@@ -120,12 +121,20 @@ export default class Parser extends Component {
 	}
 
 	table() {
+		let recurrences = {
+			"none" : __("none"),
+			"weekly" : __("weekly"),
+			"bi-weekly" : __("bi-weekly"),
+			"monthly" : __("monthly")
+		}
+
 		return (
 			<table className="table">
 				<thead>
 					<tr>
 						<th>{__("num")}</th>
 						<th>{__("link")}</th>
+						<th>{__("follow")}</th>
 						<th>{__("edit")}</th>
 					</tr>
 				</thead>
@@ -140,6 +149,7 @@ export default class Parser extends Component {
 										{decodeURI(page.link)}
 									</a>
 								</td>
+								<td>{recurrences[page.recurrence || 'none']}</td>
 								<td>
 									<span
 										className="octicon octicon-pencil"

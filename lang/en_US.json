@@ -20,6 +20,11 @@
 	"bigram" : "bigram",
 	"trigram" : "trigram",
 	"chars4" : "chars4",
+	"follow" : "Follow",
+	"none" : "none",
+	"weekly" : "weekly",
+	"bi-weekly" : "bi-weekly",
+	"monthly" : "monthly",
 
 	"num" : "#",
 	"add_text" : "Add text",

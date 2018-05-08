@@ -85,7 +85,7 @@ export default class Progress extends Component {
 
 			setTimeout(this.load.bind(this), delay)
 			let tick = setInterval(this.tick.bind(this), this.state.tickin)
-			this.setState({ "eta" : eta, "stats" : stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 }, this.props.stats)
+			this.setState({ "eta" : eta, "stats" : stats || this.state.stats, "delay" : delay, "watch" : watch, "tick" : tick, "tickout" : 0 }, this.props.stats)
 			return
 		}
 
