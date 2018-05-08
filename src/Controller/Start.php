@@ -2,7 +2,7 @@
 
 namespace Funny\Controller;
 
-use Exception;
+use Throwable;
 use Funny\Model\Launch;
 
 class Start extends Controller {
@@ -83,7 +83,7 @@ class Start extends Controller {
 		try {
 			$launch->last($type);
 			return intval($launch->id);
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			return 0;
 		}
 	}
