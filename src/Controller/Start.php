@@ -1,12 +1,14 @@
 <?php
 
 namespace Funny\Controller;
+
+use Exception;
 use Funny\Model\Launch;
 
 class Start extends Controller {
 
 	/** POST /start/parser */
-	function parser(Launch $launch) {
+	function parser(Launch $launch, $attempts = 10) {
 		$params = $this->input();
 
 		$host = $this->config["db"]["host"];
@@ -18,18 +20,22 @@ class Start extends Controller {
 		$python = $this->config["app"]["python"];
 		$minlen = $params["minlen"];
 
+		$last = $id = $this->lastid($launch, "parser");
 		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --minlen %d';
 		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $minlen);
 		$this->run($command);
 
-		usleep(1000 * 1000);
-		$this->safe([ $launch, "last" ], "parser");
+		while ($id === $last && $attempts) {
+			usleep(500 * 1000);
+			$id = $this->lastid($launch, "parser");
+			$attempts--;
+		}
 
-		return $launch->id;
+		return $id;
 	}
 
 	/** POST /start/classifier */
-	function classifier(Launch $launch) {
+	function classifier(Launch $launch, $attempts = 10) {
 		$params = $this->input();
 
 		$host = $this->config["db"]["host"];
@@ -49,17 +55,20 @@ class Start extends Controller {
 		$tol = $params["tol"];
 		$c = $params["c"];
 
+		$last = $id = $this->lastid($launch, "classifier");
 		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --sigma %f '
 			. '--kernel "%s" --ngrams %d --lpass %d --liter %d --test %d --tol %f --c %f';
-
 		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $sigma,
 			$kernel, $ngrams, $lpass, $liter, $test, $tol, $c);
-
 		$this->run($command);
-		usleep(1000 * 1000);
-		$this->safe([ $launch, "last" ], "classifier");
 
-		return $launch->id;
+		while ($id === $last && $attempts) {
+			usleep(500 * 1000);
+			$id = $this->lastid($launch, "classifier");
+			$attempts--;
+		}
+
+		return $id;
 	}
 
 	function run($cmd) {
@@ -67,6 +76,15 @@ class Start extends Controller {
 			pclose(popen("start /B $cmd", "r"));
 		} else {
 			exec("$cmd > /dev/null 2>/dev/null &");
+		}
+	}
+
+	function lastid($launch, $type) {
+		try {
+			$launch->last($type);
+			return intval($launch->id);
+		} catch (Exception $e) {
+			return 0;
 		}
 	}
 

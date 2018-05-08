@@ -13,6 +13,7 @@ class Page extends Controller {
 		"normal",
 		"positive",
 		"negative",
+		"unknown",
 		"rremove",
 		"recurrence",
 		"created",

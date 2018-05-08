@@ -4,6 +4,7 @@ CREATE TABLE page (
 	normal      VARCHAR(255)      NULL,
 	positive    VARCHAR(255)      NULL,
 	negative    VARCHAR(255)      NULL,
+	unknown     VARCHAR(255)      NULL,
 	rremove     VARCHAR(255)      NULL,
 	recurrence  VARCHAR(255)      NULL,
 	created     TIMESTAMP         NOT NULL DEFAULT now(),

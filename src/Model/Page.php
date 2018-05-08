@@ -50,13 +50,21 @@ class Page extends Model {
 	function save() {
 		$insert = "INSERT INTO page SET %s";
 		$update = "UPDATE page SET %s WHERE id = :id";
-		$values = "link=:link,normal=:normal,positive=:positive,negative=:negative,rremove=:rremove,recurrence=:recurrence";
+		$values = "link=:link,normal=:normal,positive=:positive,negative=:negative,unknown=:unknown,rremove=:rremove,recurrence=:recurrence";
 
 		$mode = empty($this->id) ? $insert : $update;
 		$query = sprintf($mode, $values);
 
 		$binds = empty($this->id) ? [] : [ "id" => $this->id ];
-		$binds += $this->get([ "link", "normal", "positive", "negative", "rremove", "recurrence" ]);
+		$binds += $this->get([
+			"link",
+			"normal",
+			"positive",
+			"negative",
+			"unknown",
+			"rremove",
+			"recurrence"
+		]);
 
 		$statm = $this->db->prepare($query);
 		$statm->execute($binds);
