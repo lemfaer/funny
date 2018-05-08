@@ -100,7 +100,9 @@ export default class Page extends Component {
 				obj.normal = page.normal
 				obj.positive = page.positive
 				obj.negative = page.negative
+				obj.unknown = page.unknown
 				obj.rremove = page.rremove
+				break
 			}
 		}
 
