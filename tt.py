@@ -25,6 +25,11 @@ def test(svm, mode, data, labels):
 		in enumerate(zip(predict, labels))
 		if prop != real]
 
+	if len(labels):
+		perf = 1 - (len(miss) / len(labels))
+	else:
+		perf = 0
+
 	return {
 		mode : {
 			"test" : {
@@ -32,7 +37,7 @@ def test(svm, mode, data, labels):
 				"time" : end,
 				"hit" : len(labels) - len(miss),
 				"miss" : len(miss),
-				"perf" : 1 - (len(miss) / len(labels))
+				"perf" : perf
 			}
 		}
 	}
