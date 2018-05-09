@@ -9,7 +9,7 @@ return [
 		"tests" => __DIR__ . "/tests",
 		"parser" => __DIR__ . "/../parser",
 		"classifier" => __DIR__ . "/../classifier",
-		"python" => __DIR__ . "../python.sh"
+		"python" => __DIR__ . "/../python.sh"
 	],
 
 	"db" => [
