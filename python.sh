@@ -5,4 +5,4 @@ DIR=`realpath $DIR`
 
 # append libs paths
 export PYTHONPATH="${PYTHONPATH}:${DIR}"
-python3 $*
+python3 "$@"
