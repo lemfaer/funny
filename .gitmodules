@@ -1,3 +1,0 @@
-[submodule "pysvm"]
-	path = pysvm
-	url = https://github.com/lfunny/pysvm.git
