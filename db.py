@@ -52,6 +52,18 @@ def insert_stats(cnx, lid, stats):
 	cursor.close()
 	cnx.commit()
 
+def insert_index(cnx, lid, type, index):
+	data = json.dumps(index.export())
+
+	cursor = cnx.cursor()
+	cursor.execute("""
+		INSERT INTO iindex SET type = %s, launch_id = %s, data = %s
+		ON DUPLICATE KEY UPDATE launch_id = %s, data = %s
+	""", (type, lid, data, lid, data))
+
+	cursor.close()
+	cnx.commit()
+
 def store_result(cnx, lid, type, b, alpha, data):
 	cursor = cnx.cursor()
 	cursor.execute("INSERT INTO weights SET type = %s, launch_id = %s, b = %s, alpha = %s, data = %s",

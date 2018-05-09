@@ -10,6 +10,7 @@ class Index:
 		self.texts = []
 		self.words = {}
 		self.labels = {}
+		self.deltas = {}
 		self.sample = {
 			"word" : "",
 			"count" : 0,
@@ -62,4 +63,17 @@ class Index:
 			for tid, count in word["texts"].items():
 				texts[tid] += words[wid] * count
 
+		self.deltas["texts"] = texts
+		self.deltas["words"] = words
+
 		return texts, words
+
+	def export(self):
+		return {
+			"positive" : self.positive,
+			"negative" : self.negative,
+			"texts" : self.texts,
+			"words" : self.words,
+			"labels" : self.labels,
+			"deltas" : self.deltas
+		}

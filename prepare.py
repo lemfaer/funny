@@ -62,6 +62,9 @@ def prepare(cnx, lid, ngrams, test):
 	obj_words, sen_words = obj_data.pop(), sen_data.pop()
 	obj_top, sen_top = top(obj_words), top(sen_words)
 
+	insert_index(cnx, lid, "objective", obj)
+	insert_index(cnx, lid, "sentiment", sen)
+
 	return stats, (obj_top, sen_top), (obj_data, sen_data)
 
 def data(index, test):
