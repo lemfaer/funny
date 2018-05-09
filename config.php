@@ -4,12 +4,12 @@ return [
 
 	"app" => [
 		"domain" => $_SERVER["HTTP_HOST"],
-		"python" => "python3",
 		"root" => __DIR__,
 		"src" => __DIR__ . "/src",
 		"tests" => __DIR__ . "/tests",
 		"parser" => __DIR__ . "/../parser",
-		"classifier" => __DIR__ . "/../classifier"
+		"classifier" => __DIR__ . "/../classifier",
+		"python" => __DIR__ . "../python.sh"
 	],
 
 	"db" => [
