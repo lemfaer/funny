@@ -61,12 +61,17 @@ class Index:
 			words[wid] = self.wdelta(wp, wn, p, n) if p and n else 0
 
 			for tid, count in word["texts"].items():
+				tid = int(tid) if isinstance(tid, str) and tid.isdigit() else tid
 				texts[tid] += words[wid] * count
 
-		self.deltas["texts"] = texts
-		self.deltas["words"] = words
-
 		return texts, words
+
+	def importo(self, data):
+		self.positive = data["positive"]
+		self.negative = data["negative"]
+		self.texts = data["texts"]
+		self.words = data["words"]
+		self.labels = data["labels"]
 
 	def export(self):
 		return {
@@ -74,6 +79,5 @@ class Index:
 			"negative" : self.negative,
 			"texts" : self.texts,
 			"words" : self.words,
-			"labels" : self.labels,
-			"deltas" : self.deltas
+			"labels" : self.labels
 		}
