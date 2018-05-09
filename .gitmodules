@@ -7,3 +7,6 @@
 [submodule "classifier"]
 	path = classifier
 	url = https://github.com/lfunny/classifier.git
+[submodule "pysvm"]
+	path = pysvm
+	url = https://github.com/lfunny/pysvm.git
