@@ -33,8 +33,8 @@ def ngrams(text, n = 2, mode = WORDS):
 
 def tnorm(text):
 	text = sub(r"[^\w\s]", "", text)
-	text = sub(r"\s", sep, text)
-	text = text.strip()
+	text = sub(r"\s+", sep, text)
+	text = text.strip(sep)
 	text = text.lower()
 	return text
 
