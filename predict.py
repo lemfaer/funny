@@ -34,6 +34,11 @@ class Predict:
 		self.deltas["sentiment"]["words"] = words
 		self.deltas["sentiment"]["texts"] = texts
 
+	def ratio(self, uid):
+		odata = self.deltas["objective"]["texts"][uid]
+		sdata = self.deltas["sentiment"]["texts"][uid]
+		return { "objective" : odata, "sentiment" : sdata }
+
 	def type(self, uid):
 		odata = self.deltas["objective"]["texts"][uid]
 		sdata = self.deltas["sentiment"]["texts"][uid]
@@ -47,34 +52,7 @@ class Predict:
 
 		return res
 
-	def probability(self, uid):
-		odata = self.deltas["objective"]["texts"][uid]
-		sdata = self.deltas["sentiment"]["texts"][uid]
-
-		objective = self.orderly(self.obj.data, 1)
-		subjective = self.orderly(self.obj.data, -1)
-		positive = self.orderly(self.sen.data, 1)
-		negative = self.orderly(self.sen.data, -1)
-
-		# partial probability
-		objectivity = bisect(objective, odata) / len(objective)
-		subjectivity = 1 - bisect(subjective, odata) / len(subjective)
-		positivity = subjectivity * bisect(positive, sdata) / len(positive)
-		negativity = subjectivity * (1 - bisect(negative, sdata) / len(negative))
-
-		# relative probability
-		total = objectivity + positivity + negativity
-		objectivity = objectivity / total
-		positivity = positivity / total
-		negativity = negativity / total
-
-		return {
-			"normal" : objectivity,
-			"positive" : positivity,
-			"negative" : negativity
-		}
-
-	def top(self, n = 10):
+	def top(self, n = 15):
 		delta = self.deltas["sentiment"]["words"]
 		top = [ None for i in range(n) ]
 		topi = [ 0 for i in range(n) ]
@@ -97,7 +75,3 @@ class Predict:
 					top.pop(0)
 
 		return top
-
-	def orderly(self, dl, label):
-		data = [ r for (r, z), l in dl if l == label ]
-		return sorted(data)

@@ -11,9 +11,11 @@ predict = Predict(svms, indexes, ngrams)
 uid = predict.text(text)
 predict.calc()
 
-type = predict.type(uid)
-prob = predict.probability(uid)
-top = predict.top()
+data = {
+	"type" : predict.type(uid),
+	"ratio" : predict.ratio(uid),
+	"top" : predict.top(),
+}
 
-result = { "type" : type, "probability" : prob, "top" : top }
-print(json.dumps(result))
+data = json.dumps(data)
+print(data)
