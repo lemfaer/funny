@@ -47,7 +47,7 @@ class Start extends Controller {
 		$python = $this->config["app"]["python"];
 
 		$sigma = $params["sigma"];
-		$kernel = $params["kernel"];
+		$kernel = escapeshellarg($params["kernel"]);
 		$ngrams = $params["ngrams"];
 		$lpass = $params["lpass"];
 		$liter = $params["liter"];
@@ -57,7 +57,7 @@ class Start extends Controller {
 
 		$last = $id = $this->lastid($launch, "classifier");
 		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --sigma %f '
-			. '--kernel "%s" --ngrams %d --lpass %d --liter %d --test %d --tol %f --c %f';
+			. '--kernel %s --ngrams %d --lpass %d --liter %d --test %d --tol %f --c %f';
 		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $sigma,
 			$kernel, $ngrams, $lpass, $liter, $test, $tol, $c);
 		$this->run($command);
@@ -69,6 +69,25 @@ class Start extends Controller {
 		}
 
 		return $id;
+	}
+
+	/** POST /start/predict */
+	function predict() {
+		$params = $this->input();
+
+		$host = $this->config["db"]["host"];
+		$base = $this->config["db"]["base"];
+		$user = $this->config["db"]["user"];
+		$pass = $this->config["db"]["pass"];
+		$path = $this->config["app"]["predict"];
+		$path = escapeshellcmd(realpath($path));
+		$python = $this->config["app"]["python"];
+		$text = escapeshellarg($params["text"]);
+
+		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --text %s 2>&1';
+		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $text);
+
+		return shell_exec($command);
 	}
 
 	function run($cmd) {

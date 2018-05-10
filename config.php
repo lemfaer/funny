@@ -9,6 +9,7 @@ return [
 		"tests" => __DIR__ . "/tests",
 		"parser" => __DIR__ . "/../parser",
 		"classifier" => __DIR__ . "/../classifier",
+		"predict" => __DIR__ . "/../predict",
 		"python" => __DIR__ . "/../python.sh"
 	],
 
@@ -27,6 +28,7 @@ return [
 	"routes" => [
 		[ "POST", "~^start/parser$~", [ \Funny\Controller\Start::class, "parser" ] ],
 		[ "POST", "~^start/classifier$~", [ \Funny\Controller\Start::class, "classifier" ] ],
+		[ "POST", "~^start/predict$~", [ \Funny\Controller\Start::class, "predict" ] ],
 
 		[ "GET", "~^launches/([0-9]+),?([0-9]+)?$~", [ \Funny\Controller\Launch::class, "all" ] ],
 		[ "GET", "~^launch/([0-9]+)$~", [ \Funny\Controller\Launch::class, "get" ] ],
