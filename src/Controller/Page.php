@@ -16,7 +16,6 @@ class Page extends Controller {
 		"unknown",
 		"rremove",
 		"recurrence",
-		"date",
 		"created",
 		"updated"
 	];

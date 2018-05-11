@@ -48,7 +48,7 @@ class PageTest extends TestCase {
 
 		$result = $page->all();
 		$result = array_shift($result);
-		$result = $result->get([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "date" ]);
+		$result = $result->get([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence" ]);
 
 		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
 		$this->assertSame($result, $expected_result);
@@ -65,8 +65,7 @@ class PageTest extends TestCase {
 					"negative" => null,
 					"unknown" => null,
 					"rremove" => null,
-					"recurrence" => null,
-					"date" => null
+					"recurrence" => null
 				]],
 				"query" => "SELECT *, unix_timestamp(created) AS created, unix_timestamp(updated) AS updated FROM page",
 				"result" => [
@@ -77,8 +76,7 @@ class PageTest extends TestCase {
 					"negative" => null,
 					"unknown" => null,
 					"rremove" => null,
-					"recurrence" => null,
-					"date" => null
+					"recurrence" => null
 				]
 			]
 		];
@@ -128,7 +126,7 @@ class PageTest extends TestCase {
 
 		$page->db = $db;
 		$page->load($data["id"]);
-		$result = $page->get([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "date", "created", "updated" ]);
+		$result = $page->get([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "created", "updated" ]);
 
 		$this->assertSame(preg_replace("/\s+/", " ", $query), $expected_query);
 		$this->assertSame($result, $expected_result);
@@ -146,7 +144,6 @@ class PageTest extends TestCase {
 					"unknown" => null,
 					"rremove" => null,
 					"recurrence" => null,
-					"date" => null,
 					"created" => 0,
 					"updated" => 0
 				],
@@ -162,7 +159,6 @@ class PageTest extends TestCase {
 					"unknown" => null,
 					"rremove" => null,
 					"recurrence" => null,
-					"date" => null,
 					"created" => 0,
 					"updated" => 0
 				]
@@ -227,11 +223,10 @@ class PageTest extends TestCase {
 					"negative" => "NULL",
 					"unknown" => "NULL",
 					"rremove" => "NULL",
-					"recurrence" => "NULL",
-					"date" => "NULL"
+					"recurrence" => "NULL"
 				],
 
-				"query" => "INSERT INTO page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,unknown=NULL,rremove=NULL,recurrence=NULL,date=NULL"
+				"query" => "INSERT INTO page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,unknown=NULL,rremove=NULL,recurrence=NULL"
 			],
 
 			"update" => [
@@ -243,11 +238,10 @@ class PageTest extends TestCase {
 					"negative" => "NULL",
 					"unknown" => "NULL",
 					"rremove" => "NULL",
-					"recurrence" => "NULL",
-					"date" => "NULL"
+					"recurrence" => "NULL"
 				],
 
-				"query" => "UPDATE page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,unknown=NULL,rremove=NULL,recurrence=NULL,date=NULL WHERE id = 42"
+				"query" => "UPDATE page SET link='http://example.com',normal=NULL,positive=NULL,negative=NULL,unknown=NULL,rremove=NULL,recurrence=NULL WHERE id = 42"
 			]
 		];
 	}

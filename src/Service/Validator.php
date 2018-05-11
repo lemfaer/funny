@@ -46,10 +46,6 @@ class Validator {
 		return is_null($value) || in_array($value, [ "weekly", "bi-weekly", "monthly" ]);
 	}
 
-	function date($value) {
-		return is_null($value) || ( is_string($value) && !empty($value) );
-	}
-
 	function text($value) {
 		return is_string($value);
 	}
