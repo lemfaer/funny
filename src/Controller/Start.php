@@ -21,7 +21,7 @@ class Start extends Controller {
 		$minlen = $params["minlen"];
 
 		$last = $id = $this->lastid($launch, "parser");
-		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --minlen %d';
+		$command = '%s %s --host "%s" --base "%s" --user "%s" --pass "%s" --minlen %d --script "parser"';
 		$command = sprintf($command, $python, $path, $host, $base, $user, $pass, $minlen);
 		$this->run($command);
 
