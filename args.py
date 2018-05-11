@@ -7,6 +7,7 @@ arp.add_argument("--base", type=str, required=True)
 arp.add_argument("--user", type=str, required=True)
 arp.add_argument("--pass", dest="password", type=str, required=True)
 arp.add_argument("--minlen", type=int, required=True)
+arp.add_argument("--script", type=str, required=True)
 
 args = arp.parse_args()
 
@@ -18,3 +19,4 @@ base = {
 }
 
 ll = args.minlen
+script = args.script

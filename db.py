@@ -13,7 +13,7 @@ def select_avg(cnx):
 
 def select_links(cnx):
 	cursor = cnx.cursor(buffered=True)
-	cursor.execute("SELECT link, normal, positive, negative, rremove FROM page")
+	cursor.execute("SELECT link, normal, positive, negative, unknown, rremove FROM page")
 	return cursor
 
 def insert_launch(cnx):
@@ -30,9 +30,9 @@ def delete_texts(cnx):
 	cursor.close()
 	cnx.commit()
 
-def insert_texts(cnx, texts):
+def insert_texts(cnx, page):
 	cursor = cnx.cursor()
-	cursor.executemany("INSERT INTO text (text, class, temp) VALUES (%s, %s, %s)", texts)
+	cursor.executemany("INSERT INTO text (text, class, temp) VALUES (%s, %s, 'YES')", page.export())
 	cursor.close()
 	cnx.commit()
 
