@@ -31,7 +31,7 @@ class PageTest extends TestCase {
 
 		$model->expects($this->any())
 			->method("get")
-			->with($this->equalTo([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "created", "updated" ]))
+			->with($this->equalTo([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "date", "created", "updated" ]))
 			->will($this->returnCallback(function () use (&$data) {
 				return array_shift($data);
 			}));
@@ -53,6 +53,7 @@ class PageTest extends TestCase {
 						"unknown" => null,
 						"rremove" => null,
 						"recurrence" => null,
+						"date" => null,
 						"created" => 0,
 						"updated" => 0
 					],
@@ -66,12 +67,13 @@ class PageTest extends TestCase {
 						"unknown" => null,
 						"rremove" => null,
 						"recurrence" => "weekly",
+						"date" => null,
 						"created" => 0,
 						"updated" => 0
 					]
 				],
 
-				"result" => '[{"id":42,"link":"http:\/\/example.com","normal":null,"positive":null,"negative":null,"unknown":null,"rremove":null,"recurrence":null,"created":0,"updated":0},{"id":70,"link":"https:\/\/example.com\/page\/lalala","normal":null,"positive":"span.hello > p","negative":null,"unknown":null,"rremove":null,"recurrence":"weekly","created":0,"updated":0}]'
+				"result" => '[{"id":42,"link":"http:\/\/example.com","normal":null,"positive":null,"negative":null,"unknown":null,"rremove":null,"recurrence":null,"date":null,"created":0,"updated":0},{"id":70,"link":"https:\/\/example.com\/page\/lalala","normal":null,"positive":"span.hello > p","negative":null,"unknown":null,"rremove":null,"recurrence":"weekly","date":null,"created":0,"updated":0}]'
 			]
 		];
 	}
@@ -98,7 +100,7 @@ class PageTest extends TestCase {
 
 		$model->expects($this->any())
 			->method("get")
-			->with($this->equalTo([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "created", "updated" ]))
+			->with($this->equalTo([ "id", "link", "normal", "positive", "negative", "unknown", "rremove", "recurrence", "date", "created", "updated" ]))
 			->will($this->returnCallback(function () use ($data) {
 				return $data;
 			}));
@@ -131,11 +133,12 @@ class PageTest extends TestCase {
 					"unknown" => null,
 					"rremove" => null,
 					"recurrence" => null,
+					"date" => null,
 					"created" => 0,
 					"updated" => 0
 				],
 
-				"result" => '{"id":42,"link":"http:\/\/example.com","normal":null,"positive":null,"negative":null,"unknown":null,"rremove":null,"recurrence":null,"created":0,"updated":0}'
+				"result" => '{"id":42,"link":"http:\/\/example.com","normal":null,"positive":null,"negative":null,"unknown":null,"rremove":null,"recurrence":null,"date":null,"created":0,"updated":0}'
 			],
 
 			"not_found" => [
@@ -208,7 +211,8 @@ class PageTest extends TestCase {
 					"negative" => null,
 					"unknown" => null,
 					"rremove" => null,
-					"recurrence" => null
+					"recurrence" => null,
+					"date" => null
 				],
 
 				"result" => null
@@ -225,7 +229,8 @@ class PageTest extends TestCase {
 					"negative" => null,
 					"unknown" => null,
 					"rremove" => null,
-					"recurrence" => null
+					"recurrence" => null,
+					"date" => null
 				],
 
 				"result" => null
@@ -254,7 +259,8 @@ class PageTest extends TestCase {
 					"negative" => null,
 					"unknown" => null,
 					"rremove" => null,
-					"recurrence" => null
+					"recurrence" => null,
+					"date" => null
 				],
 
 				"result" => [
