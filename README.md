@@ -1,8 +1,6 @@
 # frontend
 git clone https://github.com/lfunny/frontend.git -b v5.0 --recursive ./  
 git submodule update --init --recursive api classifier parser predict pysvm  
-pip install -r classifier/requirements.txt  
-pip install -r predict/requirements.txt  
-pip install -r parser/requirements.txt  
 composer install -d api --no-dev  
+pip install -r requirements.txt  
 yarn install --production  

@@ -1,0 +1,3 @@
+-r classifier/requirements.txt
+-r predict/requirements.txt
+-r parser/requirements.txt
