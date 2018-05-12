@@ -10,6 +10,11 @@ function chart(element, report, type) {
 }
 
 function texts_chart(element, report) {
+	if ( !report["total_normal_parsed"] && !report["total_positive_parsed"]
+			&& !report["total_negative_parsed"] ) {
+		return;
+	}
+
 	var data = [
 		report["total_normal_parsed"],
 		report["total_positive_parsed"],
@@ -56,6 +61,11 @@ function texts_chart(element, report) {
 }
 
 function texts2_chart(element, report) {
+	if ( !report["total_normal_parsed"] && !report["total_positive_parsed"]
+			&& !report["total_negative_parsed"] ) {
+		return;
+	}
+
 	var data = [
 		report["total_normal_parsed"],
 		report["total_positive_parsed"],

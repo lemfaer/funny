@@ -68,7 +68,8 @@ export default class Launches extends Component {
 	short(launch) {
 		let charts = {
 			"parser" : [ "texts" ],
-			"classifier" : [ "stages", "perf" ]
+			"classifier" : [ "stages", "perf" ],
+			"follow" : [ "texts" ]
 		}
 
 		let strings = __("report_strings")
@@ -104,13 +105,26 @@ export default class Launches extends Component {
 	}
 
 	card(launch, index) {
-		var short = this.short(launch),
+		let classnm = "card-header"
+		let short = this.short(launch),
 			strings = short[0],
 			chart = short[1]
 
+		if (launch.type === "parser") {
+			classnm += " bg-success "
+		}
+
+		if (launch.type === "classifier") {
+			classnm += " bg-primary "
+		}
+
+		if (launch.type === "follow") {
+			classnm += " bg-warning "
+		}
+
 		return (
 			<div className="card my-3 mx-2" key={index}>
-				<div className={"card-header " + (launch.type === "parser" ? "bg-success" : "bg-primary")}>
+				<div className={classnm}>
 					{sprintf(__("launch_num"), launch.id)}
 				</div>
 

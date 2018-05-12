@@ -82,12 +82,14 @@ export default class Report extends Component {
 		}
 	}
 
-	parsing() {
+	parsing(mode) {
 		return (
 			<div className="col-lg-10 col-12 mx-auto">
 				<div className="report card">
-					<h4 className="card-header font-weight-normal bg-success">
-						{sprintf(__("launch_num"), this.id())}
+					<h4
+						className={"card-header font-weight-normal"
+						+ (mode === "parser" ? " bg-success " : " bg-warning ")}>
+							{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
@@ -148,12 +150,14 @@ export default class Report extends Component {
 		)
 	}
 
-	parsed() {
+	parsed(mode) {
 		return (
-			<div className="col-lg-10 col-12 mx-auto">
+			<div className="col-lg-10 col-12 mb-3 mx-auto">
 				<div className="report card">
-					<h4 className="card-header font-weight-normal bg-success">
-						{sprintf(__("launch_num"), this.id())}
+					<h4
+						className={"card-header font-weight-normal"
+						+ (mode === "parser" ? " bg-success " : " bg-warning ")}>
+							{sprintf(__("launch_num"), this.id())}
 					</h4>
 
 					<div className="card-body float-right">
@@ -227,7 +231,7 @@ export default class Report extends Component {
 		}
 
 		return (
-			<div className="col-lg-10 col-12 mx-auto">
+			<div className="col-lg-10 col-12 mb-3 mx-auto">
 				<div className="report card">
 					<h4 className="card-header font-weight-normal bg-primary">
 						{sprintf(__("launch_num"), this.id())}
@@ -341,7 +345,7 @@ export default class Report extends Component {
 
 	ptable() {
 		return (
-			<div className="col-lg-10 col-12 mt-3 mx-auto">
+			<div className="col-lg-10 col-12 mx-auto">
 				<table className="table">
 					<thead>
 						<tr>
@@ -380,7 +384,7 @@ export default class Report extends Component {
 		let cl = (this.state.tab & (1 << 1) ? "objective" : "sentiment")
 
 		return (
-			<div className="col-lg-10 col-12 mt-3 mx-auto">
+			<div className="col-lg-10 col-12 mx-auto">
 				<ul className="pagination justify-content-center">
 					{[ __("positive_t"), __("negative_t"), __("objective_t"), __("subjective_t") ].map((name, index) => {
 						return (
@@ -421,6 +425,24 @@ export default class Report extends Component {
 		)
 	}
 
+	ftop() {
+		let top = this.state.report.top30
+		let entities = []
+
+		for (let i in top) {
+			let word = top[i][0]
+			let cls = (top[i][1] > 0 ? "positive" : "negative")
+			let entity = <li key={i} className={cls}>{word}</li>
+			entities.push(entity)
+		}
+
+		return (
+			<ul className="text-tags">
+				{entities}
+			</ul>
+		)
+	}
+
 	render() {
 		let launch = this.launch(this.id())
 
@@ -428,9 +450,13 @@ export default class Report extends Component {
 			<div>
 				<Header current="/reports" />
 				<div className="container pt-4">
-					{(launch && launch.type === "parser" && !launch.report) ? this.parsing() : ""}
-					{(launch && launch.type === "parser" && launch.report) ? this.parsed() : ""}
+					{(launch && launch.type === "parser" && !launch.report) ? this.parsing("parser") : ""}
+					{(launch && launch.type === "parser" && launch.report) ? this.parsed("parser") : ""}
 					{(launch && launch.type === "parser" && launch.report) ? this.ptable() : ""}
+					{(launch && launch.type === "follow" && !launch.report) ? this.parsing("follow") : ""}
+					{(launch && launch.type === "follow" && launch.report) ? this.parsed("follow") : ""}
+					{(launch && launch.type === "follow" && launch.report) ? this.ftop() : ""}
+					{(launch && launch.type === "follow" && launch.report) ? this.ptable() : ""}
 					{(launch && launch.type === "classifier" && !launch.report) ? this.training() : ""}
 					{(launch && launch.type === "classifier" && launch.report) ? this.trained() : ""}
 					{(launch && launch.type === "classifier" && launch.report) ? this.ctable() : ""}
