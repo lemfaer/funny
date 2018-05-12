@@ -1,7 +1,9 @@
 import lxml
 import lxml.html
-from re import sub
+from hashlib import sha256
+from uuid import uuid4
 import requests
+import re
 
 class Page:
 
@@ -21,6 +23,7 @@ class Page:
 		self.positive = []
 		self.negative = []
 		self.unknown = []
+		self.hashes = {}
 
 	def load(self):
 		response = requests.get(self.link)
@@ -36,8 +39,8 @@ class Page:
 
 		for text in nodes:
 			text = text.text_content()
-			text = sub(r"\s+", " ", text)
-			text = sub(rr[1:-1], "", text) if rr else text
+			text = re.sub(r"\s+", " ", text)
+			text = re.sub(rr[1:-1], "", text) if rr else text
 
 			if text and len(text) > ll:
 				texts.append(text)
@@ -51,8 +54,30 @@ class Page:
 		self.negative = self.filter(tree.xpath(self.sel_negative)) if self.sel_negative else []
 		self.unknown = self.filter(tree.xpath(self.sel_unknown)) if self.sel_unknown else []
 
-	def predict(self, predict):
-		pass
+	def identify(self, predict):
+		predict.text(self.normal, objl=1, senl=0)
+		predict.text(self.positive, objl=-1, senl=1)
+		predict.text(self.negative, objl=-1, senl=-1)
+		uids = predict.text(self.unknown, objl=0, senl=0)
+		predict.calc()
+
+		for i, uid in enumerate(uids):
+			type = predict.type(uid)
+			texts = getattr(self, type)
+			texts.append(self.unknown[i])
+
+	def munique(self, unique):
+		hashes = set(self.hashes.keys())
+		remove = hashes - set(unique)
+
+		for hash in remove:
+			type, i = self.hashes.pop(hash)
+			texts = getattr(self, type)
+			texts[i] = None
+
+		self.normal = list(filter(bool, self.normal))
+		self.positive = list(filter(bool, self.positive))
+		self.negative = list(filter(bool, self.negative))
 
 	def count(self):
 		normal = len(self.normal)
@@ -66,6 +91,27 @@ class Page:
 			"negative" : negative,
 			"all" : all
 		}
+
+	def hash(self):
+		hashes = {}
+
+		for i, text in enumerate(self.normal):
+			hash = sha256(text.encode("utf-8")).hexdigest()
+			hashes[hash] = ("normal", i)
+
+		for i, text in enumerate(self.positive):
+			hash = sha256(text.encode("utf-8")).hexdigest()
+			hashes[hash] = ("positive", i)
+
+		for i, text in enumerate(self.negative):
+			hash = sha256(text.encode("utf-8")).hexdigest()
+			hashes[hash] = ("negative", i)
+
+		self.hashes = hashes
+		hashes = hashes.keys()
+		hashes = list(hashes)
+
+		return hashes
 
 	def export(self):
 		texts = []

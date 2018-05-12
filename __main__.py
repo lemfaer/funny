@@ -1,55 +1,93 @@
-from __future__ import division, print_function
+from predict.predict import Predict
+from predict.db import select_last_weights, select_indexes
+from args import base, script, ll
 from report import create_report
-from args import base, ll
 from time import time
 from page import Page
 from db import *
 
-cnx = connect(**base)
-lid = insert_launch(cnx)
-left = select_lcount(cnx)
-avg, right = select_avg(cnx)
-right = right or 0
-avg = avg or 0
-stats = []
+if script:
+	mode = "follow"
+else:
+	mode = "parser"
 
-delete_texts(cnx)
+try:
+	cnx = connect(**base)
+	lid = insert_launch(cnx, mode)
+	left = select_lcount(cnx, script)
+	avg, right = select_avg(cnx)
+	right = right or 0
+	avg = avg or 0
+	stats = []
 
-for data in select_links(cnx):
-	start = time()
-	link, args = data[0], data[1:]
-	page = Page(link, args, ll=ll)
+	if mode == "parser":
+		delete_texts(cnx)
 
-	page.load()
-	loaded = time() - start
+	if mode == "follow":
+		indexes = select_indexes(cnx)
+		svms, ngrams = select_last_weights(cnx)
+		predict = Predict(svms, indexes, ngrams)
 
-	page.parse()
-	parsed = time() - start - loaded
+	for data in select_links(cnx, script):
+		start = time()
+		link, args = data[0], data[1:]
+		page = Page(link, args, ll=ll)
 
-	insert_texts(cnx, page)
-	rtime = time() - start
+		page.load()
+		loaded = time() - start
 
-	left -= 1
-	right += 1
-	avg = avg + (rtime - avg) / right
-	eta = left * avg
+		page.parse()
+		parsed = time() - start - loaded
 
-	clen = page.length
-	count = page.count()
+		if mode == "follow":
+			page.identify(predict)
+			predicted = time() - start - loaded - parsed
+		else:
+			predicted = 0
 
-	s = {
-		"link" : link,
-		"args" : args,
-		"count" : count,
-		"loaded" : loaded,
-		"parsed" : parsed,
-		"time" : rtime,
-		"len" : clen,
-		"eta" : eta
-	}
+		uniq = select_unique(cnx, page)
+		page.munique(uniq)
 
-	insert_stats(cnx, lid, s)
-	stats.append(s)
+		insert_texts(cnx, page)
+		rtime = time() - start
 
-create_report(cnx, lid, ll, stats)
-cnx.close()
+		left -= 1
+		right += 1
+		avg = avg + (rtime - avg) / right
+		eta = left * avg
+
+		clen = page.length
+		count = page.count()
+
+		s = {
+			"link" : link,
+			"args" : args,
+			"count" : count,
+			"loaded" : loaded,
+			"parsed" : parsed,
+			"predicted" : predicted,
+			"time" : rtime,
+			"len" : clen,
+			"eta" : eta
+		}
+
+		insert_stats(cnx, lid, mode, s)
+		stats.append(s)
+
+	if stats:
+		if mode == "parser":
+			top5 = []
+			top30 = []
+
+		if mode == "follow":
+			top5 = predict.top(5)
+			top30 = predict.top(30)
+
+		create_report(cnx, lid, ll, stats, top5, top30)
+	else:
+		delete_launch(cnx, lid)
+except:
+	delete_launch(cnx, lid)
+	raise
+finally:
+	cnx.close()
