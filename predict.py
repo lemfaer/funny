@@ -15,15 +15,19 @@ class Predict:
 		self.sen = svms["sentiment"]
 		self.ngrams = ngrams
 
-	def text(self, text):
-		uid = uuid4()
-		words = combined(tnorm(text), self.ngrams)
+	def text(self, texts, objl=0, senl=0):
+		uids = []
 
-		self.words[uid] = words
-		self.obji.append(words, uid, 0)
-		self.seni.append(words, uid, 0)
+		for text in texts:
+			uid = uuid4()
+			uids.append(uid)
+			words = combined(tnorm(text), self.ngrams)
 
-		return uid
+			self.words[uid] = words
+			self.obji.append(words, uid, objl)
+			self.seni.append(words, uid, senl)
+
+		return uids
 
 	def calc(self):
 		texts, words = self.obji.delta()
@@ -44,9 +48,9 @@ class Predict:
 		sdata = self.deltas["sentiment"]["texts"][uid]
 
 		res = self.obj.predict([ [ odata, 0 ] ])
-		res = "normal" if res[0] == 1 else "other"
+		res = "normal" if res[0] == 1 else "polar"
 
-		if res == "other":
+		if res == "polar":
 			res = self.sen.predict([ [ sdata, 0 ] ])
 			res = "positive" if res[0] == 1 else "negative"
 

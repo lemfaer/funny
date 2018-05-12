@@ -8,7 +8,7 @@ svms, ngrams = select_last_weights(cnx)
 indexes = select_indexes(cnx)
 
 predict = Predict(svms, indexes, ngrams)
-uid = predict.text(text)
+uid = predict.text([text]).pop()
 predict.calc()
 
 data = {
