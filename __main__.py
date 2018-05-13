@@ -19,8 +19,8 @@ try:
 	uid = predict.text([text]).pop()
 	predict.calc()
 
-	data["ratio"] = predict.type(uid)
-	data["type"] = predict.ratio(uid)
+	data["type"] = predict.type(uid)
+	data["ratio"] = predict.ratio(uid)
 	data["top"] = predict.top()
 except:
 	pass
