@@ -30,6 +30,17 @@
 			"rremove" : null
 		},
 
+		"rozetka" : {
+			"title" : "rozetka",
+			"match" : "^(https?:\/\/)?(www\\.)?rozetka(\\.com)?\\.ua.*$",
+			"flags" : "i",
+			"normal" : null,
+			"positive" : "//span[contains(@class, 'g-rating-stars-i') and number(@content) > 3]/ancestor::article//div[@class = 'pp-review-text']",
+			"negative" : "//span[contains(@class, 'g-rating-stars-i') and number(@content) < 4]/ancestor::article//div[@class = 'pp-review-text']",
+			"unknown" : null,
+			"rremove" : null
+		},
+
 		"kinopoisk" : {
 			"title" : "kinopoisk",
 			"match" : "^(https?:\/\/)?(www\\.)?kinopoisk\\.ru.*$",
