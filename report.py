@@ -2,7 +2,7 @@ from db import *
 
 def create_report(cnx, lid, stats, top, cargs):
 	if len(stats) != 3:
-		return
+		raise Exception
 
 	otop, stop = top
 	ps = stats["prepare"]["stats"]

@@ -44,6 +44,12 @@ def insert_launch(cnx):
 	cnx.commit()
 	return lid
 
+def delete_launch(cnx, lid):
+	cursor = cnx.cursor()
+	cursor.execute("DELETE FROM launch WHERE id = %s LIMIT 1", [lid])
+	cursor.close()
+	cnx.commit()
+
 def insert_stats(cnx, lid, stats):
 	cursor = cnx.cursor()
 	cursor.execute("INSERT INTO stats SET type = 'classifier', launch_id = %s, time = %s, eta = %s, info = %s",

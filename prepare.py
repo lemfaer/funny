@@ -58,6 +58,9 @@ def prepare(cnx, lid, ngrams, test):
 			cwords = 0
 			ctime = 0
 
+	if not obj.texts and not sen.texts:
+		raise Exception
+
 	obj_data, sen_data = data(obj, test), data(sen, test)
 	obj_words, sen_words = obj_data.pop(), sen_data.pop()
 	obj_top, sen_top = top(obj_words), top(sen_words)
