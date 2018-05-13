@@ -78,4 +78,7 @@ class Predict:
 					topi.pop(0)
 					top.pop(0)
 
+		top = filter(bool, top)
+		top = list(top)
+
 		return top
