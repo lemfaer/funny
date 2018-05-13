@@ -45,7 +45,7 @@ export default class Predict extends Component {
 	}
 
 	reset(clear = true) {
-		let text = (!clear ? undefined : "")
+		let text = (!clear ? this.refs.text.value : "")
 		sessionStorage.removeItem("main-analysis")
 		clear && sessionStorage.removeItem("main-text")
 		this.setState({ "data" : {text}, "validated" : false })
