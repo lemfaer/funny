@@ -48,7 +48,7 @@ class Page:
 		return texts
 
 	def parse(self):
-		tree = lxml.html.document_fromstring(self.content)
+		tree = lxml.html.document_fromstring(self.content, parser = lxml.html.HTMLParser(encoding="utf-8"))
 		self.normal = self.filter(tree.xpath(self.sel_normal)) if self.sel_normal else []
 		self.positive = self.filter(tree.xpath(self.sel_positive)) if self.sel_positive else []
 		self.negative = self.filter(tree.xpath(self.sel_negative)) if self.sel_negative else []
