@@ -2,14 +2,11 @@ from text import tnorm, combined
 from operator import itemgetter
 from functools import partial
 from pysvm.kernel import *
-from index import Index
 from time import time
 import collections
 from db import *
 
-def prepare(cnx, lid, ngrams, test):
-	obj, sen = Index(), Index()
-
+def prepare(cnx, lid, ngrams, test, obj, sen):
 	stats = {}
 	left = select_tcount(cnx)
 	right, avg = select_pavg(cnx)
@@ -64,9 +61,6 @@ def prepare(cnx, lid, ngrams, test):
 	obj_data, sen_data = data(obj, test), data(sen, test)
 	obj_words, sen_words = obj_data.pop(), sen_data.pop()
 	obj_top, sen_top = top(obj_words), top(sen_words)
-
-	insert_index(cnx, lid, "objective", obj)
-	insert_index(cnx, lid, "sentiment", sen)
 
 	return stats, (obj_top, sen_top), (obj_data, sen_data)
 

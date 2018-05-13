@@ -4,13 +4,15 @@ from watch import watch, flush
 from estimate import Estimate
 from tt import train, test
 from pysvm.svm import SVM
+from index import Index
 from args import *
 from db import *
 
 try:
 	cnx = connect(**base)
 	lid = insert_launch(cnx)
-	stats, top, dl = prepare(cnx, lid, cargs["ngrams"], cargs["test"])
+	obj, sen = Index(), Index()
+	stats, top, dl = prepare(cnx, lid, cargs["ngrams"], cargs["test"], obj, sen)
 	k = kernel(cargs["kernel"], cargs["sigma"])
 	estimate = Estimate()
 	estimate.read()
@@ -24,6 +26,8 @@ try:
 		stats = update(stats, tr, te, ts)
 
 	create_report(cnx, lid, stats, top, cargs)
+	insert_index(cnx, lid, "objective", obj)
+	insert_index(cnx, lid, "sentiment", sen)
 	estimate.train()
 	estimate.store()
 except:
