@@ -1,4 +1,6 @@
+*.pyc
 /node_modules
 /npm-debug.log
 /api/vendor
 /api/composer.lock
+/classifier/estimate.json
