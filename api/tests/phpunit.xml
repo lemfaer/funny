@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="../vendor/autoload.php" colors="true">
+	<testsuites>
+		<testsuite name="controller">
+			<directory>./Controller</directory>
+		</testsuite>
+		<testsuite name="model">
+			<directory>./Model</directory>
+		</testsuite>
+		<testsuite name="services">
+			<directory>./Service</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory>../src/Controller</directory>
+			<directory>../src/Model</directory>
+			<directory>../src/Service</directory>
+		</whitelist>
+	</filter>
+</phpunit>

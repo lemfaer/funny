@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4" : {
+            "Funny\\": "src/",
+            "Funny\\Test\\": "test/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "6.*"
+    }
+}
